@@ -7,12 +7,30 @@ const passport = require("passport");
 const flash = require("express-flash");
 const session = require("express-session");
 const app = express();
+app.use(express.urlencoded({ extended: false }));
+
 const port = process.env.PORT || 5000;
 
 app.use(cors());
-app.use(express.json());
-passport.initialize();
 
+const initializePassport = require("./passport/passport-config");
+initializePassport(
+  passport,
+  (email) => users.find((user) => user.email === email),
+  (id) => users.find((user) => user.id === id)
+);
+
+app.use(flash());
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
 //const medicationsRouter = require('./routes/medicationsRouter');
 const usersRouter = require("./routes/users.js");
 
