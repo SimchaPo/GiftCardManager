@@ -1,5 +1,4 @@
 const router = require("express").Router();
-const bcrypt = require("bcrypt");
 const passport = require("passport");
 let User = require("../models/user.model");
 
@@ -9,27 +8,9 @@ router.route("/").get((req, res) => {
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
-router.route("/add").post((req, res) => {
-  console.log("body: ", req.body);
-  const userName = req.body.userName;
-  const newUser = new User({ userName });
-  newUser
-    .save()
-    .then(() => res.json("user added!"))
-    .catch((err) => res.status(400).json("Error: " + err));
-});
-
-router.route("/addPassport").post(async (req, res) => {
+router.route("/adduser").post(async (req, res) => {
   try {
-    console.log("add pasport body: ", req.body);
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    console.log("add pasport hash: ", hashedPassword);
-    const newUser = new User({
-      userName: req.body.userName,
-      email: req.body.email,
-      password: hashedPassword,
-    });
-    newUser
+    new User(req.body)
       .save()
       .then(() => res.json("user added!"))
       .catch((err) => res.status(400).json("Error: " + err));
@@ -59,11 +40,9 @@ router.route("/delete/:id").delete((req, res) => {
 });
 
 router.route("/update/:id").post((req, res) => {
-  console.log("params: ", req.params.id);
   User.findById(req.params.id)
     .then((user) => {
       user.userName = req.body.userName;
-      console.log("user: ", req.body.userName);
       user
         .save()
         .then(() => res.json("user updated!"))
@@ -77,8 +56,12 @@ const {
 } = require("../middleware/auth");
 const { render } = require("@testing-library/react");
 
-router.route("/login").get(checkNotAuthenticated, (req, res) => {
+router.route("/loggedin").get(checkAuthenticated, (req, res) => {
   console.log("logged");
+});
+
+router.route("/notloggedin").get(checkNotAuthenticated, (req, res) => {
+  console.log("notlogged");
 });
 
 router.route("/login").post(
@@ -87,7 +70,6 @@ router.route("/login").post(
     successRedirect: "/home",
     failureRedirect: "/login",
     failureFlash: true,
-    successMessage: "Authenticated",
   })
 );
 

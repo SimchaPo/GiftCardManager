@@ -37,9 +37,6 @@ const usersRouter = require("./routes/users.js");
 
 //app.use('/medications', medicationsRouter);
 app.use("/users", usersRouter);
-app.get("/home", (req, res) => {
-  console.log("hi");
-});
 
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
