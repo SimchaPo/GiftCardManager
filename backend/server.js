@@ -12,12 +12,13 @@ app.use(express.urlencoded({ extended: false }));
 const port = process.env.PORT || 5000;
 
 app.use(cors());
+let User = require("./models/user.model");
 
 const initializePassport = require("./passport/passport-config");
 initializePassport(
   passport,
-  (email) => users.find((user) => user.email === email),
-  (id) => users.find((user) => user.id === id)
+  (email) => User.findOne({ email: email }),
+  (id) => User.findById(id)
 );
 
 app.use(flash());
@@ -36,6 +37,9 @@ const usersRouter = require("./routes/users.js");
 
 //app.use('/medications', medicationsRouter);
 app.use("/users", usersRouter);
+app.get("/home", (req, res) => {
+  console.log("hi");
+});
 
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);

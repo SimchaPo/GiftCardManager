@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const bcrypt = require("bcrypt");
+const passport = require("passport");
 let User = require("../models/user.model");
 
 router.route("/").get((req, res) => {
@@ -37,13 +38,21 @@ router.route("/addPassport").post(async (req, res) => {
   }
 });
 
-router.route("/:id").get((req, res) => {
+router.route("/getuserbyid/:id").get((req, res) => {
   User.findById(req.params.id)
     .then((user) => res.json(user))
     .catch((err) => res.status(400).json("Error: " + err));
 });
+router.route("/getuserbyemail/:email").get((req, res) => {
+  User.findOne({ email: req.params.email }).then((user) =>
+    console.log(user.email)
+  );
+  User.findOne({ email: req.params.email })
+    .then((user) => res.json(user))
+    .catch((err) => res.status(400).json("Error: " + err));
+});
 
-router.route("/:id").delete((req, res) => {
+router.route("/delete/:id").delete((req, res) => {
   User.findByIdAndDelete(req.params.id)
     .then((user) => res.json("user deleted."))
     .catch((err) => res.status(400).json("Error: " + err));
@@ -61,6 +70,34 @@ router.route("/update/:id").post((req, res) => {
         .catch((err) => res.status(400).json("Error: " + err));
     })
     .catch((err) => res.status(400).json("Error: " + err));
+});
+const {
+  checkNotAuthenticated,
+  checkAuthenticated,
+} = require("../middleware/auth");
+const { render } = require("@testing-library/react");
+
+router.route("/login").get(checkNotAuthenticated, (req, res) => {
+  console.log("logged");
+});
+
+router.route("/login").post(
+  checkNotAuthenticated,
+  passport.authenticate("local", {
+    successRedirect: "/home",
+    failureRedirect: "/login",
+    failureFlash: true,
+    successMessage: "Authenticated",
+  })
+);
+
+router.route("/home").get((req, res) => {
+  console.log("hi");
+});
+
+router.route("/logout").delete((req, res) => {
+  req.logOut();
+  res.redirect("/login");
 });
 
 module.exports = router;
