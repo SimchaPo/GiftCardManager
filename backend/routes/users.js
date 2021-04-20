@@ -10,6 +10,7 @@ router.route("/").get((req, res) => {
 
 router.route("/adduser").post(async (req, res) => {
   try {
+    console.log("add user:", req.body);
     new User(req.body)
       .save()
       .then(() => res.json("user added!"))
@@ -34,6 +35,7 @@ router.route("/getuserbyemail/:email").get((req, res) => {
 });
 
 router.route("/delete/:id").delete((req, res) => {
+  //console.log("user to delete:", id);
   User.findByIdAndDelete(req.params.id)
     .then((user) => res.json("user deleted."))
     .catch((err) => res.status(400).json("Error: " + err));
