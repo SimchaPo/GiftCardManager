@@ -17,6 +17,11 @@ class Navbar extends Component {
               </Link>
             </li>
             <li className="navbar-item">
+              <Link to="/signIn" className="nav-link">
+                Sign In
+              </Link>
+            </li>
+            <li className="navbar-item">
               <Link to="/createGC" className="nav-link">
                 Create Gift Card
               </Link>

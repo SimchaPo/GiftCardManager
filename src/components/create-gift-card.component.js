@@ -15,6 +15,10 @@ class CreateGiftCard extends Component {
   componentDidMount() {
     axios.get("http://localhost:5000/users").then((res) => {
       if (res.data.length > 0) {
+        console.log(
+          "users",
+          res.data.map((user) => user.userName)
+        );
         this.setState({
           users: res.data.map((user) => user.userName),
           userName: res.data[0].userName,
