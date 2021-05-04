@@ -6,7 +6,6 @@ const User = (props) => (
   <tr>
     <td>{props.user.userName}</td>
     <td>{props.user.email}</td>
-    <td>{props.user.password}</td>
     <td>
       <Link to={"/edit/" + props.user._id}>edit</Link> |{" "}
       <a
@@ -60,7 +59,7 @@ class UsersList extends Component {
             <tr>
               <th>User Name</th>
               <th>Email</th>
-              <th>Password</th>
+              <th>Edit | Delete</th>
             </tr>
           </thead>
           <tbody>{this.UsersList()}</tbody>

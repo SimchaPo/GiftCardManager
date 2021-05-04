@@ -17,6 +17,27 @@ class Navbar extends Component {
               </Link>
             </li>
             <li className="navbar-item">
+              <Link to="/logIn" className="nav-link">
+                Log In
+              </Link>
+            </li>
+
+            <li className="navbar-item">
+              <Link to="/createUser" className="nav-link">
+                Create User
+              </Link>
+            </li>
+            <li className="navbar-item">
+              <Link to="/orderCard" className="nav-link">
+                Order Card
+              </Link>
+            </li>
+            <li className="navbar-item">
+              <Link to="/createStore" className="nav-link">
+                Create Store
+              </Link>
+            </li>
+            <li className="navbar-item">
               <Link to="/signIn" className="nav-link">
                 Sign In
               </Link>
@@ -24,11 +45,6 @@ class Navbar extends Component {
             <li className="navbar-item">
               <Link to="/createGC" className="nav-link">
                 Create Gift Card
-              </Link>
-            </li>
-            <li className="navbar-item">
-              <Link to="/createUser" className="nav-link">
-                Create User
               </Link>
             </li>
           </ul>

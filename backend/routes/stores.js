@@ -1,48 +1,47 @@
 const router = require("express").Router();
-let GiftCard = require("../models/giftCard.model.js");
+let Store = require("../models/store.model.js");
 
 router.route("/").get((req, res) => {
-  console.log("get gift cards list");
-  GiftCard.find()
-    .then((giftcards) => res.json(giftcards))
+  console.log("get stores list");
+  Store.find()
+    .then((stores) => res.json(stores))
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
-router.route("/addgiftcard").post(async (req, res) => {
+router.route("/addstore").post(async (req, res) => {
   try {
-    console.log("add gift card:", req.body);
-    new GiftCard(req.body)
+    console.log("add store:", req.body);
+    new Store(req.body)
       .save()
-      .then(() => res.json("gift card added!"))
+      .then(() => res.json("store added!"))
       .catch((err) => res.status(400).json("Error: " + err));
   } catch {
     (err) => res.status(400).json("Error: " + err);
   }
 });
 
-router.route("/getgiftcardbyid/:id").get((req, res) => {
-  GiftCard.findById(req.params.id)
+router.route("/getstorebyid/:id").get((req, res) => {
+  Store.findById(req.params.id)
     .then((store) => res.json(store))
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
 router.route("/delete/:id").delete((req, res) => {
-  GiftCard.findByIdAndDelete(req.params.id)
-    .then((giftcard) => res.json("gift card deleted."))
+  //console.log("user to delete:", id);
+  Store.findByIdAndDelete(req.params.id)
+    .then((store) => res.json("store deleted."))
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
 router.route("/update/:id").post((req, res) => {
   Store.findById(req.params.id)
-    .then((giftcard) => {
-      giftcard.storeName = req.body.storeName;
-      giftcard.cardNumber = req.body.cardNumber;
-      giftcard.amount = req.body.amount;
-      giftcard.expiry = req.body.expiry;
+    .then((store) => {
+      store.storeName = req.body.storeName;
+      store.website = req.body.website;
 
       store
         .save()
-        .then(() => res.json("gift card updated!"))
+        .then(() => res.json("store updated!"))
         .catch((err) => res.status(400).json("Error: " + err));
     })
     .catch((err) => res.status(400).json("Error: " + err));

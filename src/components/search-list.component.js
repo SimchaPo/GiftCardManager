@@ -1,7 +1,7 @@
-import React from "react";
+import React, { Component } from "react";
 import Select from "react-select";
-import axios from "axios";
-class SearchList extends React.Component {
+
+class SearchList extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -12,8 +12,8 @@ class SearchList extends React.Component {
 
   handleChange = (selectedOption) => {
     this.setState({ selectedOption });
-    this.props.getSelectedOption(selectedOption.value);
-    console.log(`Option selected:`, selectedOption);
+    this.props.getSelectedOption(selectedOption);
+    console.log("Option selected:", selectedOption);
   };
   render() {
     return (

@@ -14,13 +14,32 @@ const userSchema = new Schema(
     userName: {
       type: String,
       required: [true, "userName is required"],
-      unique: true,
       trim: true,
     },
     password: {
       type: String,
       required: [true, "password is required"],
       minlength: [4, "password is to short"],
+      trim: true,
+    },
+    address: {
+      type: String,
+      required: [true, "address is required"],
+      trim: true,
+    },
+    country: {
+      type: String,
+      required: [true, "country is required"],
+      trim: true,
+    },
+    city: {
+      type: String,
+      required: [true, "city is required"],
+      trim: true,
+    },
+    zip: {
+      type: String,
+      required: [true, "zip is required"],
       trim: true,
     },
   },

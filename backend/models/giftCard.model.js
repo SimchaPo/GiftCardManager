@@ -4,8 +4,13 @@ const Schema = mongoose.Schema;
 
 const giftCardSchema = new Schema(
   {
-    storename: {
+    storeName: {
       type: String,
+      required: true,
+      trim: true,
+    },
+    cardNumber: {
+      type: Number,
       required: true,
       trim: true,
     },
@@ -14,8 +19,8 @@ const giftCardSchema = new Schema(
       required: true,
       trim: true,
     },
-    date: {
-      type: Date,
+    expiry: {
+      type: String,
       required: true,
       trim: true,
     },
