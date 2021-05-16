@@ -42,6 +42,12 @@ const userSchema = new Schema(
       required: [true, "zip is required"],
       trim: true,
     },
+    userType: {
+      type: String,
+      enum: ["user", "officer", "admin"],
+      default: "user",
+      trim: true,
+    },
   },
   {
     timestamps: true,

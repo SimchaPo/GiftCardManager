@@ -1,72 +1,161 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
+import { CartProvider, useCart } from "react-use-cart";
+import axios from "axios";
+import qs from "qs";
+import CardTemplate from "./gift-card-product-template.component";
+import { Col, Row, Button, Badge, Jumbotron, Container } from "react-bootstrap";
+import Cards from "react-credit-cards";
 
-import { Cart, AddCartButton } from "react-cart-components";
+function Page() {
+  const { addItem } = useCart();
+  const [products, setProducts] = useState([]);
 
-const products = [
-  {
-    id: 1,
-    name: "Flamboyant Pink Top",
-    sku: "kskskskks",
-    price: 200.0,
-    image: "https://colorlib.com/preview/theme/divisima/img/product/6.jpg",
-  },
-  {
-    id: 2,
-    name: "Black and White Stripes Dress",
-    sku: "kskskskks",
-    price: 300.0,
-    image: "https://colorlib.com/preview/theme/divisima/img/product/5.jpg",
-  },
-  {
-    id: 3,
-    name: "Flamboyant Pink Top",
-    sku: "kskskskks",
-    price: 400.0,
-    image: "https://colorlib.com/preview/theme/divisima/img/product/7.jpg",
-  },
-  {
-    id: 4,
-    name: "Flamboyant Pink Top",
-    sku: "kskskskks",
-    price: 400.0,
-    image: "https://colorlib.com/preview/theme/divisima/img/product/8.jpg",
-  },
-];
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/giftcards")
+      .then((res) => {
+        if (res.data.length > 0) {
+          const products = res.data.map((p) => {
+            p["id"] = p._id;
+            p["price"] = p.amount;
+            return p;
+          });
+          setProducts(products);
+        }
+      })
+      .catch((error) => console.log(error));
+  }, []);
 
-class Example extends Component {
-  render() {
-    return (
-      <Cart currency="USD">
-        <div>
-          {products.map((product, key) => {
-            return (
-              <div className="col" key={key}>
-                <div className="product-item">
-                  <div className="pi-pic">
-                    <img src={product.image} />
-                    <div className="pi-links">
-                      <AddCartButton
-                        product={product}
-                        styles={{
-                          backgroundColor: "#009688",
-                          color: "white",
-                          border: "0",
-                        }}
-                      />
-                    </div>
-                  </div>
-                  <div className="pi-text">
-                    <p>{product.name}</p>
-                    <h6>{product.price}</h6>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </Cart>
-    );
-  }
+  return (
+    <Row>
+      {products.map((p) => (
+        <Col key={p.id}>
+          <CardTemplate giftCard={p} addToCart={() => addItem(p)} />
+        </Col>
+      ))}
+    </Row>
+  );
+}
+function ItemCart(props) {
+  const {
+    isEmpty,
+    totalUniqueItems,
+    items,
+    updateItemQuantity,
+    removeItem,
+  } = useCart();
+  return (
+    <Jumbotron fluid>
+      <Container>
+        <Row>
+          <Col>
+            <Cards
+              cvc={props.item.amount}
+              expiry={props.item.expiry}
+              name={props.item.storeName}
+              number={props.item.cardNumber}
+              focused={""}
+            />
+          </Col>
+          <Col>
+            <p>Store Name: {props.item.storeName}</p>
+            <p>Amount: {props.item.amount}</p>
+            <p>Price: {props.item.price}</p>
+          </Col>
+          <Col>
+            <h3>
+              <Badge
+                className="m-2"
+                style={{ fontSize: "4.5rem" }}
+                variant="info"
+              >
+                {props.item.quantity}
+              </Badge>
+            </h3>
+          </Col>
+          <Col>
+            <Button
+              variant="warning"
+              onClick={() =>
+                updateItemQuantity(props.item.id, props.item.quantity - 1)
+              }
+            >
+              -
+            </Button>
+            <br />
+            <Button
+              variant="success"
+              onClick={() =>
+                updateItemQuantity(props.item.id, props.item.quantity + 1)
+              }
+            >
+              +
+            </Button>
+            <br />
+            <Button variant="danger" onClick={() => removeItem(props.item.id)}>
+              &times;
+            </Button>
+          </Col>
+        </Row>
+      </Container>
+    </Jumbotron>
+  );
+}
+function checkOut(items, cartTotal) {
+  const order = {
+    giftCards: items,
+    price: cartTotal,
+  };
+  console.log(order);
+  axios
+    .post("http://localhost:5000/orders/addorder", qs.stringify(order), {
+      headers: {
+        "content-type": "application/x-www-form-urlencoded",
+      },
+      withCredentials: true,
+    })
+    .then((res) => console.log(res.data))
+    .catch((err) => console.log("Error", err));
+}
+function Cart() {
+  const {
+    isEmpty,
+    totalUniqueItems,
+    items,
+    totalItems,
+    cartTotal,
+    updateItemQuantity,
+    removeItem,
+  } = useCart();
+
+  if (isEmpty) return <p>Your cart is empty</p>;
+
+  return (
+    <>
+      <h3>Cart</h3>
+      <h4>
+        Total Unique Items: {totalUniqueItems}, Total Items: {totalItems}, Cart
+        Total: {cartTotal}
+      </h4>
+
+      {items.map((item) => {
+        return <ItemCart key={item.id} item={item} giftCard={item} />;
+      })}
+      <button
+        className="btn btn-primary"
+        onClick={() => checkOut(items, cartTotal)}
+      >
+        Check Out
+      </button>
+    </>
+  );
 }
 
-export default Example;
+export default function CartCatalog() {
+  return (
+    <CartProvider>
+      <Page />
+      <Cart />
+    </CartProvider>
+  );
+}

@@ -1,49 +1,55 @@
 const router = require("express").Router();
-let Store = require("../models/store.model.js");
+let Order = require("../models/order.model.js");
 
 router.route("/").get((req, res) => {
-  console.log("get stores list");
-  Store.find()
-    .then((stores) => res.json(stores))
+  console.log("get orders list");
+  Order.find()
+    .then((orders) => res.json(orders))
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
-router.route("/addstore").post(async (req, res) => {
+router.route("/addorder").post(async (req, res) => {
   try {
-    console.log("add store:", req.body);
-    console.log("store to add", req.body);
-
-    new Store(req.body)
+    let order = {
+      giftCards: req.body.giftCards.map((giftCard) => ({
+        giftCard: giftCard,
+        quantity: giftCard.quantity,
+      })),
+      user: req.user,
+      price: req.body.price,
+    };
+    console.log("order to add", order);
+    new Order(order)
       .save()
-      .then(() => res.json("store added!"))
-      .catch((err) => res.status(400).json("Error: " + err));
+      .then(() => res.json("order added!"))
+      .catch((err) => {
+        console.log(err);
+        res.status(400).json("Error: " + err);
+      });
   } catch {
     (err) => res.status(400).json("Error: " + err);
   }
 });
 
-router.route("/getstorebyid/:id").get((req, res) => {
-  Store.findById(req.params.id)
-    .then((store) => res.json(store))
+router.route("/getorderbyid/:id").get((req, res) => {
+  Order.findById(req.params.id)
+    .then((order) => res.json(order))
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
 router.route("/delete/:id").delete((req, res) => {
   //console.log("user to delete:", id);
-  Store.findByIdAndDelete(req.params.id)
-    .then((store) => res.json("store deleted."))
+  Order.findByIdAndDelete(req.params.id)
+    .then((order) => res.json("order deleted."))
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
 router.route("/update/:id").post((req, res) => {
-  Store.findById(req.params.id)
-    .then((store) => {
-      store.storeName = req.body.storeName;
-      store.website = req.body.website;
-
-      store
+  Order.findById(req.params.id)
+    .then((order) => {
+      order
         .save()
-        .then(() => res.json("store updated!"))
+        .then(() => res.json("order updated!"))
         .catch((err) => res.status(400).json("Error: " + err));
     })
     .catch((err) => res.status(400).json("Error: " + err));

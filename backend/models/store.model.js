@@ -19,6 +19,10 @@ const storeSchema = new Schema(
     timestamps: true,
   }
 );
+storeSchema.pre("save", async function (next) {
+  console.log("this", this);
 
+  next();
+});
 const Store = mongoose.model("Store", storeSchema);
 module.exports = Store;

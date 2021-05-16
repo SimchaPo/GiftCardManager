@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import axios from "axios";
-import qs from "qs";
+import { withRouter } from "react-router-dom";
 
 class LogIn extends Component {
   constructor(props) {
@@ -8,9 +7,9 @@ class LogIn extends Component {
     this.onChangeEmail = this.onChangeEmail.bind(this);
     this.onChangePassword = this.onChangePassword.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-    this.getcuruser = this.getcuruser.bind(this);
     this.state = { email: "", password: "" };
   }
+
   onChangeEmail(e) {
     this.setState({ email: e.target.value });
   }
@@ -23,26 +22,9 @@ class LogIn extends Component {
       email: this.state.email,
       password: this.state.password,
     };
-    console.log(user);
-    axios
-      .post("http://localhost:5000/users/login", qs.stringify(user), {
-        headers: {
-          "content-type": "application/x-www-form-urlencoded",
-        },
-        withCredentials: true,
-      })
-      .then((res) => console.log(res.data))
-      .catch((err) => console.log(err));
-  }
-  getcuruser(e) {
-    e.preventDefault();
-    axios
-      .get("http://localhost:5000/users/getcuruser", {
-        withCredentials: true,
-      })
-
-      .then((res) => console.log("cur user", res.data))
-      .catch((err) => console.log(err));
+    this.props.login(user, () => {
+      this.props.history.push("/");
+    });
   }
   render() {
     return (
@@ -76,12 +58,9 @@ class LogIn extends Component {
         <button type="submit" className="btn btn-primary">
           Log In
         </button>
-        <button onClick={this.getcuruser} className="btn btn-primary">
-          abc
-        </button>
       </form>
     );
   }
 }
 
-export default LogIn;
+export default withRouter(LogIn);

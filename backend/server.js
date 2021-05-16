@@ -8,8 +8,9 @@ const cockieParser = require("cookie-parser");
 const flash = require("express-flash");
 const session = require("express-session");
 const app = express();
+let User = require("./models/user.model");
 
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 app.use(
   session({
@@ -37,10 +38,12 @@ app.use(flash());
 const giftCardsRouter = require("./routes/giftCards.js");
 const usersRouter = require("./routes/users.js")(passport);
 const storesRouter = require("./routes/stores.js");
+const ordersRouter = require("./routes/orders.js");
 
 app.use("/giftcards", giftCardsRouter);
 app.use("/users", usersRouter);
 app.use("/stores", storesRouter);
+app.use("/orders", ordersRouter);
 const port = process.env.PORT || 5000;
 
 app.listen(port, () => {

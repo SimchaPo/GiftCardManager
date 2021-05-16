@@ -73,33 +73,25 @@ module.exports = function (passport) {
   router.route("/login").post((req, res, next) => {
     passport.authenticate("local", (err, user, info) => {
       if (err) throw err;
-      if (!user) res.send("No User Exists");
+      if (!user) res.status(400).send("No User Exists");
       else {
         req.logIn(user, (err) => {
           if (err) throw err;
-          res.send("Successfully Authenticated");
+          res.status(200).send({ message: "Successfully Authenticated", user });
         });
       }
     })(req, res, next);
   });
 
-  router.route("/getcuruser").get((req, res) => {
-    res.send(req.user); // The req.user stores the entire user that has been authenticated inside of it.
+  router.route("/logout").get((req, res) => {
+    req.session.destroy((err) => {
+      if (err) throw err;
+      res.clearCookie("connect.sid").status(200).send(req.user);
+    });
   });
-  //router.route("/login").post(
-  //  checkNotAuthenticated,
-  //  passport.authenticate("local", {
-  //    successRedirect: "users/yes",
-  //    failureRedirect: "users/no",
-  //    failureFlash: true,
-  //  })
-  //);
 
-  router.route("/yes").get((req, res) => {
-    console.log("yes");
-  });
-  router.route("/no").get((req, res) => {
-    console.log("yes");
+  router.route("/getcuruser").get((req, res) => {
+    res.send(req.user);
   });
 
   router.route("/logout").delete((req, res) => {
