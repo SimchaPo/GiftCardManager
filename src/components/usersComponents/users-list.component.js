@@ -7,15 +7,18 @@ const User = (props) => (
     <td>{props.user.userName}</td>
     <td>{props.user.email}</td>
     <td>
-      <Link to={"/edit/" + props.user._id}>edit</Link> |{" "}
-      <a
-        href="#"
+      <Link className="btn btn-link" to={"/edit/" + props.user._id}>
+        edit
+      </Link>
+      |
+      <button
+        className="btn btn-link"
         onClick={() => {
           props.deleteUser(props.user._id);
         }}
       >
         delete
-      </a>
+      </button>
     </td>
   </tr>
 );
@@ -23,19 +26,24 @@ class UsersList extends Component {
   constructor(props) {
     super(props);
     this.deleteUser = this.deleteUser.bind(this);
-    this.state = { users: [] };
+    this.state = { users: [], error: null };
   }
   componentDidMount() {
     axios
-      .get("http://localhost:5000/users")
+      .get("http://localhost:5000/users", { withCredentials: true })
       .then((res) => {
+        console.log("res", res);
         if (res.data.length > 0) {
           this.setState({
             users: res.data,
           });
         }
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        this.setState({
+          error: error.response.data.errorMessage,
+        });
+      });
   }
   deleteUser(id) {
     console.log(id);
@@ -51,7 +59,9 @@ class UsersList extends Component {
     });
   }
   render() {
-    return (
+    return this.state.error ? (
+      <h3 className="text-center">{this.state.error}</h3>
+    ) : (
       <div>
         <h3>Users</h3>
         <table className="table">

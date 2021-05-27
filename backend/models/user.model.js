@@ -1,6 +1,7 @@
 const validator = require("validator");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+const ROLE = require("../../src/roles.enum.js");
 const Schema = mongoose.Schema;
 const userSchema = new Schema(
   {
@@ -44,8 +45,8 @@ const userSchema = new Schema(
     },
     userType: {
       type: String,
-      enum: ["user", "officer", "admin"],
-      default: "user",
+      enum: ROLE,
+      default: ROLE[2],
       trim: true,
     },
   },
@@ -55,6 +56,12 @@ const userSchema = new Schema(
 );
 
 userSchema.pre("save", async function (next) {
+  if (!this.password || !this.isModified("password")) return next;
+  this.password = await bcrypt.hash(this.password, 10);
+  next();
+});
+
+userSchema.pre("updateOne", async function (next) {
   if (!this.password || !this.isModified("password")) return next;
   this.password = await bcrypt.hash(this.password, 10);
   next();

@@ -4,21 +4,22 @@ import Select from "react-select";
 class SearchList extends Component {
   constructor(props) {
     super(props);
+    console.log("props", props);
     this.state = {
-      options: [],
       selectedOption: null,
     };
   }
-
+  componentDidMount() {
+    this.setState({ selectedOption: this.props.defaultValue });
+  }
   handleChange = (selectedOption) => {
     this.setState({ selectedOption });
     this.props.getSelectedOption(selectedOption);
-    console.log("Option selected:", selectedOption);
   };
   render() {
     return (
       <Select
-        value={this.selectedOption}
+        placeholder={this.props.defaultValue}
         onChange={this.handleChange}
         options={this.props.options}
       />

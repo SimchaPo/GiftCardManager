@@ -1,24 +1,24 @@
+const ROLE = require("../../src/roles.enum");
+
 module.exports = function (passport) {
   const router = require("express").Router();
-  //const passport = require("passport");
   let User = require("../models/user.model");
-
-  router.route("/").get((req, res) => {
-    User.find()
-      .then((users) => res.json(users))
-      .catch((err) => res.status(400).json("Error: " + err));
-  });
-
-  router.route("/adduser").post(async (req, res) => {
-    try {
-      console.log("add user:", req.body);
-      new User(req.body)
-        .save()
-        .then(() => res.json("user added!"))
+  const { authUser, authRole } = require("../middleware/basicAuth");
+  router
+    .route("/")
+    .all(authUser, authRole(ROLE[0]))
+    .get((req, res) => {
+      User.find()
+        .then((users) => res.status(200).json(users))
         .catch((err) => res.status(400).json("Error: " + err));
-    } catch {
-      (err) => res.status(400).json("Error: " + err);
-    }
+    });
+
+  router.route("/adduser").post((req, res) => {
+    console.log("add user:", req.body);
+    new User(req.body)
+      .save()
+      .then(() => res.json("user added!"))
+      .catch((err) => res.status(400).json("Error: " + err));
   });
 
   router.route("/getuserbyid/:id").get((req, res) => {
@@ -36,31 +36,26 @@ module.exports = function (passport) {
   });
 
   router.route("/delete/:id").delete((req, res) => {
-    //console.log("user to delete:", id);
     User.findByIdAndDelete(req.params.id)
       .then((user) => res.json("user deleted."))
       .catch((err) => res.status(400).json("Error: " + err));
   });
 
   router.route("/update/:id").post((req, res) => {
-    User.findById(req.params.id)
-      .then((user) => {
-        user.userName = req.body.userName;
-        user.email = req.body.email;
-        user.password = req.body.password;
-
-        user
-          .save()
-          .then(() => res.json("user updated!"))
-          .catch((err) => res.status(400).json("Error: " + err));
-      })
+    User.findOneAndUpdate({ _id: req.params.id }, req.body, {
+      new: true,
+      useFindAndModify: false,
+    })
+      .then((user) =>
+        res.status(200).send({ message: "Successfully updated", user })
+      )
       .catch((err) => res.status(400).json("Error: " + err));
   });
+
   const {
     checkNotAuthenticated,
     checkAuthenticated,
   } = require("../middleware/auth");
-  const { render } = require("@testing-library/react");
 
   router.route("/loggedin").get(checkAuthenticated, (req, res) => {
     console.log("logged");

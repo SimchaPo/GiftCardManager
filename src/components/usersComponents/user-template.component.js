@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import SearchList from "./search-list.component.js";
+import SearchList from "../search-list.component";
 
 class UsersTemplate extends Component {
   render() {

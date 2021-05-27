@@ -5,10 +5,13 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
 import "bootstrap/dist/js/bootstrap.bundle.min";
+import { ProvideAuth } from "./authentication/use-auth";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ProvideAuth>
+      <App />
+    </ProvideAuth>
   </React.StrictMode>,
   document.getElementById("root")
 );

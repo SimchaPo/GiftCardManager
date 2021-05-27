@@ -1,11 +1,15 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
+import { useAuth } from "../authentication/use-auth.js";
+
 export const LoggedinRoute = ({ component: Component, ...rest }) => {
+  const auth = useAuth();
   return (
     <Route
       {...rest}
       render={() => {
-        if (rest.isAuthenticated()) {
+        console.log("loggedin route", auth);
+        if (auth.user) {
           return <Component {...rest} />;
         } else {
           return (
