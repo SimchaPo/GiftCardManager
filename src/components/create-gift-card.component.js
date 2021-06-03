@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import DatePicker from "react-datepicker";
 import Cards from "react-credit-cards";
-import SearchList from "./search-list.component.js";
 import GiftCardTemplate from "./card-template.component.js";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
@@ -88,7 +87,7 @@ export default class CreateGiftCard extends Component {
       <div>
         <h3>Create New Gift Card</h3>
         <form onSubmit={this.onSubmit}>
-          <div className="form-group">
+          {/* <div className="form-group">
             <SearchList
               name="storeName"
               options={this.state.stores.map((store) => ({
@@ -98,7 +97,7 @@ export default class CreateGiftCard extends Component {
               getSelectedOption={this.onChangeStoreName}
               onFocus={this.handleInputFocus}
             />
-          </div>
+          </div> */}
           <div className="form-group">
             <label>Card Number:</label>
             <input

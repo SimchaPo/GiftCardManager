@@ -1,10 +1,11 @@
 const mongoose = require("mongoose");
+const { default: validator } = require("validator");
 const Schema = mongoose.Schema;
 const storeSchema = new Schema(
   {
-    website: {
+    storeWebsite: {
       type: String,
-      //validate: [validator.isEmail, "Please provide a valid email address"],
+      validate: [validator.isURL, "Please provide a valid website"],
       required: [true, "website is required"],
       unique: true,
       trim: true,
@@ -12,6 +13,11 @@ const storeSchema = new Schema(
     storeName: {
       type: String,
       required: [true, "userName is required"],
+      trim: true,
+    },
+    storeLogo: {
+      type: String,
+      required: [true, "logo is required"],
       trim: true,
     },
   },

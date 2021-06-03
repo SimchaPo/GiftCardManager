@@ -9,26 +9,22 @@ router.route("/").get((req, res) => {
 });
 
 router.route("/addorder").post(async (req, res) => {
-  try {
-    let order = {
-      giftCards: req.body.giftCards.map((giftCard) => ({
-        giftCard: giftCard,
-        quantity: giftCard.quantity,
-      })),
-      user: req.user,
-      price: req.body.price,
-    };
-    console.log("order to add", order);
-    new Order(order)
-      .save()
-      .then(() => res.json("order added!"))
-      .catch((err) => {
-        console.log(err);
-        res.status(400).json("Error: " + err);
-      });
-  } catch {
-    (err) => res.status(400).json("Error: " + err);
-  }
+  let order = {
+    giftCards: req.body.giftCards.map((giftCard) => ({
+      giftCard: giftCard,
+      quantity: giftCard.quantity,
+    })),
+    user: req.user,
+    price: req.body.price,
+  };
+  console.log("order to add", order);
+  new Order(order)
+    .save()
+    .then(() => res.json("order added!"))
+    .catch((err) => {
+      console.log(err);
+      res.status(400).json("Error: " + err);
+    });
 });
 
 router.route("/getorderbyid/:id").get((req, res) => {

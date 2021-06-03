@@ -3,7 +3,7 @@ import axios from "axios";
 import qs from "qs";
 import { useForm } from "react-hook-form";
 import { Form, Button } from "react-bootstrap";
-import UserTemplate from "../user-template";
+import UserTemplate from "./user-template.component";
 
 export default function SignIn() {
   const onSubmit = (user) => {

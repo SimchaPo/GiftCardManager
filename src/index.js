@@ -6,11 +6,14 @@ import reportWebVitals from "./reportWebVitals";
 
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import { ProvideAuth } from "./authentication/use-auth";
+import { CartProvider } from "react-use-cart";
 
 ReactDOM.render(
   <React.StrictMode>
     <ProvideAuth>
-      <App />
+      <CartProvider>
+        <App />
+      </CartProvider>
     </ProvideAuth>
   </React.StrictMode>,
   document.getElementById("root")

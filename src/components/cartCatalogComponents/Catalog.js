@@ -24,9 +24,7 @@ export function CatalogPage(props) {
       })
       .catch((error) => console.log(error));
   }, []);
-  useEffect(() => {
-    props.setTotalItems(totalItems);
-  }, [totalItems]);
+
   return (
     <Row>
       {products.map((p) => (

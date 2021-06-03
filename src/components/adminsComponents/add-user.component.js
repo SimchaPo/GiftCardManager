@@ -5,7 +5,7 @@ import { Button, Form, FormGroup } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import Select from "react-select";
 import ROLE from "../../roles.enum";
-import UserTemplate from "../user-template";
+import UserTemplate from "../usersComponents/user-template.component";
 
 export default function CreateNewUser() {
   const formHook = useForm({ mode: "all" });

@@ -2,15 +2,16 @@ require("./db/mongoose");
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const bcrypt = require("bcrypt");
 const passport = require("passport");
 const cockieParser = require("cookie-parser");
 const flash = require("express-flash");
 const session = require("express-session");
 const app = express();
+
 let User = require("./models/user.model");
 
 app.use(express.urlencoded({ extended: true }));
+
 app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 app.use(
   session({
@@ -46,6 +47,33 @@ app.use("/stores", storesRouter);
 app.use("/orders", ordersRouter);
 const port = process.env.PORT || 5000;
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
+});
+
+const io = require("socket.io")(server, {
+  cors: {
+    origin: "*",
+  },
+});
+
+const NEW_CHAT_MESSAGE_EVENT = "newChatMessage";
+
+io.on("connection", (socket) => {
+  console.log(`Client ${socket.id} connected`);
+
+  // Join a conversation
+  const { roomId } = socket.handshake.query;
+  socket.join(roomId);
+
+  // Listen for new messages
+  socket.on(NEW_CHAT_MESSAGE_EVENT, (data) => {
+    io.in(roomId).emit(NEW_CHAT_MESSAGE_EVENT, data);
+  });
+
+  // Leave the room if the user closes the socket
+  socket.on("disconnect", () => {
+    console.log(`Client ${socket.id} diconnected`);
+    socket.leave(roomId);
+  });
 });

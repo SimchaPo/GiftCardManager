@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Accordion, Button, Card, Form } from "react-bootstrap";
 import { useAuth } from "../../authentication/use-auth.js";
-import UserTemplate from "../user-template.js";
+import UserTemplate from "./user-template.component";
 import { useForm } from "react-hook-form";
 
 function Profile(props) {

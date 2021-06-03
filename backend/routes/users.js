@@ -6,11 +6,15 @@ module.exports = function (passport) {
   const { authUser, authRole } = require("../middleware/basicAuth");
   router
     .route("/")
-    .all(authUser, authRole(ROLE[0]))
+    .all(authUser)
     .get((req, res) => {
-      User.find()
-        .then((users) => res.status(200).json(users))
-        .catch((err) => res.status(400).json("Error: " + err));
+      req.user.userType === ROLE[0]
+        ? User.find()
+            .then((users) => res.status(200).json(users))
+            .catch((err) => res.status(400).json("Error: " + err))
+        : User.find({}, "userName userType")
+            .then((users) => res.status(200).json(users))
+            .catch((err) => res.status(400).json("Error: " + err));
     });
 
   router.route("/adduser").post((req, res) => {

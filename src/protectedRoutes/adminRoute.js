@@ -1,13 +1,13 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Route, Redirect } from "react-router-dom";
-import { UserContext } from "../components/UserContext";
+import { useAuth } from "../authentication/use-auth";
 export const AdminRoute = ({ component: Component, ...rest }) => {
-  const { user } = useContext(UserContext);
+  const auth = useAuth();
   return (
     <Route
       {...rest}
       render={() => {
-        if (user.userType === "admin") {
+        if (auth.user?.userType === "admin") {
           return <Component {...rest} />;
         } else {
           return (

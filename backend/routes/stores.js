@@ -1,5 +1,10 @@
 const router = require("express").Router();
 let Store = require("../models/store.model.js");
+const formidable = require("express-formidable");
+const { authUser, authRole } = require("../middleware/basicAuth");
+const ROLE = require("../../src/roles.enum");
+
+const fs = require("fs");
 
 router.route("/").get((req, res) => {
   console.log("get stores list");
@@ -8,19 +13,26 @@ router.route("/").get((req, res) => {
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
-router.route("/addstore").post(async (req, res) => {
-  try {
-    console.log("add store:", req.body);
-    console.log("store to add", req.body);
+router
+  .route("/addstore")
+  .all(formidable(), authUser, authRole(ROLE[0]))
+  .post(async (req, res) => {
+    console.log("add store:", req.fields);
+    console.log("store to add", req.files);
+    const newLogoName = req.fields.storeName + "-logo.jpg";
+    const newPath = __dirname + "/../../public/uploads/" + newLogoName;
+    fs.rename(req.files.storeLogo.path, newPath, () => {});
+    console.log("newPath", newPath);
 
-    new Store(req.body)
+    let store = new Store();
+    store.storeName = req.fields.storeName;
+    store.storeWebsite = req.fields.storeWebsite;
+    store.storeLogo = "/uploads/" + newLogoName;
+    store
       .save()
-      .then(() => res.json("store added!"))
+      .then((store) => res.status(200).json(store))
       .catch((err) => res.status(400).json("Error: " + err));
-  } catch {
-    (err) => res.status(400).json("Error: " + err);
-  }
-});
+  });
 
 router.route("/getstorebyid/:id").get((req, res) => {
   Store.findById(req.params.id)

@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 import axios from "axios";
 import qs from "qs";
 import { useCart } from "react-use-cart";
 import { ItemCart } from "./ItemCart";
-import { propTypes } from "react-bootstrap/esm/Image";
+import { Container } from "react-bootstrap";
 function checkOut(items, cartTotal) {
   const order = {
     giftCards: items,
@@ -22,19 +22,8 @@ function checkOut(items, cartTotal) {
 }
 
 export default function CartPage(props) {
-  const {
-    isEmpty,
-    totalUniqueItems,
-    items,
-    totalItems,
-    cartTotal,
-    addItem,
-    updateItemQuantity,
-    removeItem,
-  } = useCart();
-  useEffect(() => {
-    props.setTotalItems(totalItems);
-  }, [totalItems]);
+  const { isEmpty, totalUniqueItems, items, totalItems, cartTotal } = useCart();
+
   if (isEmpty) return <p>Your cart is empty</p>;
 
   return (
@@ -44,10 +33,12 @@ export default function CartPage(props) {
         Total Unique Items: {totalUniqueItems}, Total Items: {totalItems}, Cart
         Total: {cartTotal}
       </h4>
+      <Container fluid className="m-2">
+        {items.map((item) => {
+          return <ItemCart key={item.id} item={item} giftCard={item} />;
+        })}
+      </Container>
 
-      {items.map((item) => {
-        return <ItemCart key={item.id} item={item} giftCard={item} />;
-      })}
       <button
         className="btn btn-primary"
         onClick={() => checkOut(items, cartTotal)}
