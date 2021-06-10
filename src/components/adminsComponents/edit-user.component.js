@@ -9,7 +9,7 @@ import ROLE from "../../roles.enum";
 
 export default function EditUser(props) {
   const [userToUpdate, setUserToUpdate] = useState({});
-
+  const userId = props.match.params.id;
   const formHook = useForm({ mode: "all" });
   const roleOptions = ROLE.map((r) => ({ value: r, label: r }));
   const {
@@ -20,11 +20,11 @@ export default function EditUser(props) {
     handleSubmit,
   } = formHook;
   useEffect(() => {
-    console.log("id:", props.match.params.id);
+    console.log("id:", userId);
     axios
-      .get("http://localhost:5000/users/getuserbyid/" + props.match.params.id)
+      .get("http://localhost:5000/users/getuserbyid/" + userId)
       .then((res) => setUserToUpdate(res.data));
-  }, []);
+  }, [userId]);
   useEffect(() => {
     console.log(userToUpdate);
     setValue("userName", userToUpdate.userName);
@@ -42,7 +42,7 @@ export default function EditUser(props) {
     console.log("user to update", updatedUser);
     axios
       .post(
-        "http://localhost:5000/users/update/" + props.match.params.id,
+        "http://localhost:5000/users/update/" + userId,
         qs.stringify(updatedUser),
         {
           headers: {

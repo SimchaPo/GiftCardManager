@@ -4,17 +4,16 @@ import axios from "axios";
 import CardTemplate from "../gift-card-product-template.component";
 import { Col, Row } from "react-bootstrap";
 
-export function CatalogPage(props) {
-  const { addItem, totalItems } = useCart();
+export default function CatalogPage(props) {
+  const { addItem } = useCart();
 
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:5000/giftcards")
+    axios("http://localhost:5000/giftcards")
       .then((res) => {
         if (res.data.length > 0) {
-          const products = res.data.map((p) => {
+          const products = res.data?.map((p) => {
             p["id"] = p._id;
             p["price"] = p.amount;
             return p;

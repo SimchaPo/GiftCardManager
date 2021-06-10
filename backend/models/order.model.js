@@ -1,6 +1,4 @@
 const mongoose = require("mongoose");
-const GiftCard = require("./giftCard.model");
-const User = require("./user.model");
 
 const Schema = mongoose.Schema;
 

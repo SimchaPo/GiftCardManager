@@ -21,3 +21,13 @@ code {
   left: 0;
   width: 100%;
 }
+.navbar-nav {
+  display: inline-block;
+}
+
+.navbar-nav > li {
+  display: inline-block;
+}
+button.MuiIconButton-root {
+  padding: 0px;
+}

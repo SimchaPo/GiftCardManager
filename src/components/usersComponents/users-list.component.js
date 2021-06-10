@@ -30,7 +30,10 @@ class UsersList extends Component {
   }
   componentDidMount() {
     axios
-      .get("http://localhost:5000/users", { withCredentials: true })
+      .get("http://localhost:5000/users", {
+        withCredentials: true,
+        timeout: 5000,
+      })
       .then((res) => {
         console.log("res", res);
         if (res.data.length > 0) {
@@ -41,7 +44,7 @@ class UsersList extends Component {
       })
       .catch((error) => {
         this.setState({
-          error: error.response.data.errorMessage,
+          error: error.response?.data.errorMessage,
         });
       });
   }

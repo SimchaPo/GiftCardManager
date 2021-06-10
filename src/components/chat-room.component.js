@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import "react-chat-elements/dist/main.css";
 import "./chatcss.css";
 import useChat from "../hooks/useChat";
 
 const ChatRoom = (props) => {
   const [newMessage, setNewMessage] = useState();
-  const { messages, sendMessage } = useChat();
+  const { messages, sendMessage, countNewMessages, setCountNewMessages } =
+    useChat();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -19,6 +19,9 @@ const ChatRoom = (props) => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+  useEffect(() => {
+    setCountNewMessages(0);
+  }, [countNewMessages]);
   const handleChange = (event) => setNewMessage(event.target.value);
   return (
     <div className="chatWindow">

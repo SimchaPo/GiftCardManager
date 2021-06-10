@@ -1,27 +1,40 @@
-import { useEffect, useRef, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import socketIOClient from "socket.io-client";
 import { useAuth } from "../authentication/use-auth";
 import date from "date-and-time";
 
+const chatContext = createContext();
+
+export function ProvideChat({ children }) {
+  const chat = useProvideChat();
+  return <chatContext.Provider value={chat}>{children}</chatContext.Provider>;
+}
+
+export const useChat = () => {
+  return useContext(chatContext);
+};
+
 const NEW_CHAT_MESSAGE_EVENT = "newChatMessage"; // Name of the event
 const SOCKET_SERVER_URL = "http://localhost:5000";
 
-const useChat = () => {
+function useProvideChat() {
   const [messages, setMessages] = useState([]); // Sent and received messages
   const socketRef = useRef();
   const { user } = useAuth();
-
+  const [countNewMessages, setCountNewMessages] = useState(0);
   useEffect(() => {
     // Creates a WebSocket connection
     socketRef.current = socketIOClient(SOCKET_SERVER_URL);
 
     // Listens for incoming messages
     socketRef.current.on(NEW_CHAT_MESSAGE_EVENT, (message) => {
+      console.log("socketRef.current", socketRef.current.sockets);
       const incomingMessage = {
         ...message,
         ownedByCurrentUser: message.senderId === socketRef.current.id,
       };
       setMessages((messages) => [...messages, incomingMessage]);
+      setCountNewMessages(countNewMessages + 1);
     });
 
     // Destroys the socket reference
@@ -29,7 +42,7 @@ const useChat = () => {
     return () => {
       socketRef.current.disconnect();
     };
-  }, []);
+  }, [countNewMessages]);
 
   // Sends a message to the server that
   // forwards it to all users in the same room
@@ -43,7 +56,7 @@ const useChat = () => {
     });
   };
 
-  return { messages, sendMessage };
-};
+  return { messages, sendMessage, countNewMessages, setCountNewMessages };
+}
 
 export default useChat;

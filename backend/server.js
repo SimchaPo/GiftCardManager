@@ -40,11 +40,13 @@ const giftCardsRouter = require("./routes/giftCards.js");
 const usersRouter = require("./routes/users.js")(passport);
 const storesRouter = require("./routes/stores.js");
 const ordersRouter = require("./routes/orders.js");
+const postsRouter = require("./routes/posts.js");
 
 app.use("/giftcards", giftCardsRouter);
 app.use("/users", usersRouter);
 app.use("/stores", storesRouter);
 app.use("/orders", ordersRouter);
+app.use("/posts", postsRouter);
 const port = process.env.PORT || 5000;
 
 const server = app.listen(port, () => {
