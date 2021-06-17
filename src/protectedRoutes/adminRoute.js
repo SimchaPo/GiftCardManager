@@ -6,9 +6,9 @@ export const AdminRoute = ({ component: Component, ...rest }) => {
   return (
     <Route
       {...rest}
-      render={() => {
+      render={(props) => {
         if (auth.user?.userType === "admin") {
-          return <Component {...rest} />;
+          return <Component {...props} />;
         } else {
           return (
             <Redirect

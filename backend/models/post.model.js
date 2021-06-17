@@ -13,7 +13,7 @@ const postSchema = new Schema(
       type: String,
       required: "Content is required",
     },
-    postAuther: {
+    postAutor: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
@@ -26,8 +26,6 @@ const postSchema = new Schema(
 );
 postSchema.pre("save", async function (next) {
   console.log("this", this);
-  //if (!this.password || !this.isModified("password")) return next;
-  //this.password = await bcrypt.hash(this.password, 10);
   next();
 });
 const Post = mongoose.model("Post", postSchema);

@@ -12,15 +12,6 @@ code {
     monospace;
 }
 
-.footer {
-  margin-top: 1rem;
-  padding: 1rem;
-  background-color: rgb(235, 195, 64);
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-}
 .navbar-nav {
   display: inline-block;
 }
@@ -30,4 +21,43 @@ code {
 }
 button.MuiIconButton-root {
   padding: 0px;
+}
+
+.card-group > .card + .card {
+  border-left: 1px solid rgba(0, 0, 0, 0.125) !important;
+}
+
+input[type="file"]::file-selector-button {
+  border: 2px solid #6c5ce7;
+  padding: 0.2em 0.4em;
+  border-radius: 0.2em;
+  background-color: #a29bfe;
+  transition: 1s;
+}
+
+input[type="file"]::file-selector-button:hover {
+  background-color: #81ecec;
+  border: 2px solid #00cec9;
+}
+
+.form-control-select {
+  padding: 0rem !important;
+  border: none !important;
+}
+
+td a {
+  color: inherit !important;
+}
+td button {
+  color: inherit !important;
+}
+
+.content {
+  margin-bottom: 152.4px;
+}
+footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  right: 0;
 }

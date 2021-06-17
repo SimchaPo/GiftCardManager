@@ -59,6 +59,7 @@ export default function EditUser(props) {
       <FormGroup>
         <Form.Label>User Type</Form.Label>
         <Form.Control
+          className="form-control-select"
           as={Select}
           value={roleOptions.filter((r) => r.value === watch("userType"))}
           name="userType"

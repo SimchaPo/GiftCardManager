@@ -3,23 +3,23 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../../authentication/use-auth";
 import ROLE from "../../roles.enum";
 
-export default function UsersNav() {
+export default function OrderNav() {
   const { user } = useAuth();
   return (
     (user?.userType === ROLE[0] && (
-      <NavDropdown title="Users" id="collasible-nav-dropdown">
-        <NavDropdown.Item eventKey="12" as={Link} to="/users">
-          Users
+      <NavDropdown title="Orders" id="collasible-nav-dropdown">
+        <NavDropdown.Item eventKey="8" as={Link} to="/allorders">
+          All Orders
         </NavDropdown.Item>
 
-        <NavDropdown.Item eventKey="12" as={Link} to="/createuser">
-          Create User
+        <NavDropdown.Item eventKey="8" as={Link} to="/orders">
+          My Orders
         </NavDropdown.Item>
       </NavDropdown>
     )) ||
-    (user && user.userType !== ROLE[0] && (
-      <Nav.Link eventKey="11" as={Link} to="/users">
-        Users
+    (user && (
+      <Nav.Link eventKey="9" as={Link} to="/orders">
+        Orders
       </Nav.Link>
     ))
   );

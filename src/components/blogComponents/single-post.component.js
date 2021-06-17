@@ -8,6 +8,8 @@ import axios from "axios";
 
 export default function SinglePost(props) {
   const [post, setPost] = useState();
+  console.log(props);
+
   const postId = props.match.params.postId;
   useEffect(() => {
     axios
@@ -17,15 +19,15 @@ export default function SinglePost(props) {
   const showPost = (props) => {
     if (!post) return null;
 
-    const { postTitle, postAuthor, postContent, createdAt } = post;
-
+    const { postTitle, postAutor, postContent, createdAt } = post;
+    console.log(post);
     return (
       <Fragment>
         <Paper className="single_post">
           <h4>Title: {postTitle}</h4>
           <Divider light />
           <p>
-            <b>Autor:</b> {postAuthor}
+            <b>Autor:</b> {postAutor.userName}
           </p>
           <Divider light />
           <p>

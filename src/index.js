@@ -9,7 +9,7 @@ import "bootstrap/dist/js/bootstrap.bundle.min";
 import { ProvideAuth } from "./authentication/use-auth";
 import { CartProvider } from "react-use-cart";
 import { ProvideChat } from "./hooks/useChat";
-import swDev from "./swDev";
+import { swDev } from "./swDev";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -28,6 +28,5 @@ ReactDOM.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 
-// serviceWorkerRegistration.register();
 swDev();
 reportWebVitals();

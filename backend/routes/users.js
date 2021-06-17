@@ -72,7 +72,7 @@ module.exports = function (passport) {
   router.route("/login").post((req, res, next) => {
     passport.authenticate("local", (err, user, info) => {
       if (err) throw err;
-      if (!user) res.status(400).send("No User Exists");
+      if (!user) res.status(400).send({ errorMessage: "No User Exists" });
       else {
         req.logIn(user, (err) => {
           if (err) throw err;

@@ -9,7 +9,8 @@ const ChatRoom = (props) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    sendMessage(newMessage);
+    newMessage && sendMessage(newMessage);
+    setNewMessage(null);
     event.target.reset();
   };
   const scrollToBottom = () => {

@@ -4,6 +4,7 @@ let Order = require("../models/order.model.js");
 router.route("/").get((req, res) => {
   console.log("get orders list");
   Order.find()
+    .populate("user", "userName")
     .then((orders) => res.json(orders))
     .catch((err) => res.status(400).json("Error: " + err));
 });
@@ -26,9 +27,26 @@ router.route("/addorder").post(async (req, res) => {
       res.status(400).json("Error: " + err);
     });
 });
-
+router.route("/getusersorders/:id").get((req, res) => {
+  Order.find({ user: req.params.id })
+    .populate({
+      path: "giftCards",
+      populate: {
+        path: "giftCard",
+      },
+    })
+    .then((order) => res.json(order))
+    .catch((err) => res.status(400).json("Error: " + err));
+});
 router.route("/getorderbyid/:id").get((req, res) => {
   Order.findById(req.params.id)
+    .populate("user")
+    .populate({
+      path: "giftCards",
+      populate: {
+        path: "giftCard",
+      },
+    })
     .then((order) => res.json(order))
     .catch((err) => res.status(400).json("Error: " + err));
 });

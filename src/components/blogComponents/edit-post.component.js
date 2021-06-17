@@ -13,6 +13,7 @@ export default function EditPost(props) {
     handleSubmit,
   } = formHook;
   const [postToUpdate, setPostToUpdate] = useState({});
+  console.log(props);
   const postId = props.match.params.postId;
 
   useEffect(() => {
@@ -25,7 +26,7 @@ export default function EditPost(props) {
     console.log(postToUpdate);
     setValue("postTitle", postToUpdate.postTitle);
     setValue("postContent", postToUpdate.postContent);
-    setValue("postAuther", postToUpdate.postAuther);
+    setValue("postAutor", postToUpdate.postAutor);
 
     setValue("createdAt", postToUpdate.createdAt);
   }, [postToUpdate, setValue]);

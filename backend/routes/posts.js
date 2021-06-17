@@ -6,6 +6,7 @@ const ROLE = require("../../src/roles.enum");
 router.route("/").get((req, res) => {
   console.log("get posts list");
   Post.find()
+    .populate("postAutor", "userName")
     .then((posts) => res.json(posts))
     .catch((err) => res.status(400).json("Error: " + err));
 });
@@ -23,6 +24,7 @@ router
 
 router.route("/getpostbyid/:id").get((req, res) => {
   Post.findById(req.params.id)
+    .populate("postAutor", "userName")
     .then((post) => res.json(post))
     .catch((err) => res.status(400).json("Error: " + err));
 });

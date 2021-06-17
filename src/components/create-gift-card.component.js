@@ -5,6 +5,7 @@ import GiftCardTemplate from "./card-template.component.js";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 import qs from "qs";
+import Select from "react-select";
 
 export default class CreateGiftCard extends Component {
   constructor(props) {
@@ -15,6 +16,7 @@ export default class CreateGiftCard extends Component {
       storeName: "",
       cardNumber: "",
       amount: "",
+      price: "",
       date: new Date(),
       stores: [],
       expiry: "",
@@ -59,6 +61,7 @@ export default class CreateGiftCard extends Component {
       storeName: this.state.storeName,
       cardNumber: this.state.cardNumber,
       amount: this.state.amount,
+      price: this.state.price,
       expiry: this.state.expiry,
     };
     console.log("giftCard", giftCard);
@@ -78,6 +81,7 @@ export default class CreateGiftCard extends Component {
       storeName: "",
       cardNumber: "",
       amount: "",
+      price: "",
       expiry: "",
       date: new Date(),
     });
@@ -87,17 +91,15 @@ export default class CreateGiftCard extends Component {
       <div>
         <h3>Create New Gift Card</h3>
         <form onSubmit={this.onSubmit}>
-          {/* <div className="form-group">
-            <SearchList
-              name="storeName"
-              options={this.state.stores.map((store) => ({
-                value: store,
-                label: store,
-              }))}
-              getSelectedOption={this.onChangeStoreName}
-              onFocus={this.handleInputFocus}
-            />
-          </div> */}
+          <Select
+            name="storeName"
+            options={this.state.stores.map((store) => ({
+              value: store,
+              label: store,
+            }))}
+            onChange={this.onChangeStoreName}
+            onFocus={this.handleInputFocus}
+          />
           <div className="form-group">
             <label>Card Number:</label>
             <input
@@ -118,6 +120,18 @@ export default class CreateGiftCard extends Component {
               required
               className="form-control"
               value={this.state.amount}
+              onChange={this.handleInputChange}
+              onFocus={this.handleInputFocus}
+            />
+          </div>
+          <div className="form-group">
+            <label>Price:</label>
+            <input
+              name="price"
+              type="text"
+              required
+              className="form-control"
+              value={this.state.price}
               onChange={this.handleInputChange}
               onFocus={this.handleInputFocus}
             />

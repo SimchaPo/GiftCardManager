@@ -33,7 +33,7 @@ ul li {
 }
 .post_list {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  justify-items: center;
 }
 .post_category {
   text-align: center;

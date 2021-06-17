@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Card, CardDeck } from "react-bootstrap";
+import { Card, CardGroup } from "react-bootstrap";
 import { Link } from "react-router-dom";
 function StoreCard(props) {
   console.log(props);
@@ -14,13 +14,9 @@ function StoreCard(props) {
       <Card.Body>
         <Card.Title>{props.storeName}</Card.Title>
         <Card.Text>
-          <a
-            rel="noopener noreferrer"
-            href={props.storeWebsite}
-            target="_blank"
-          >
+          <Link to={{ pathname: props.storeWebsite }} target="_blank">
             {props.storeWebsite}
-          </a>
+          </Link>
         </Card.Text>
       </Card.Body>
     </Card>
@@ -44,7 +40,7 @@ export default function StoresList() {
   return (
     <div>
       <h3>Stores List</h3>
-      <CardDeck
+      <CardGroup
         style={{
           justifyContent: "center",
         }}
@@ -52,7 +48,7 @@ export default function StoresList() {
         {stores.map((store) => {
           return <StoreCard key={store._id} {...store} />;
         })}
-      </CardDeck>
+      </CardGroup>
     </div>
   );
 }

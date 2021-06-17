@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { Table } from "react-bootstrap";
 
 const User = (props) => (
   <tr>
     <td>{props.user.userName}</td>
     <td>{props.user.email}</td>
-    <td>
+    <td className="text-center">
       <Link className="btn btn-link" to={"/edit/" + props.user._id}>
         edit
       </Link>
@@ -67,16 +68,16 @@ class UsersList extends Component {
     ) : (
       <div>
         <h3>Users</h3>
-        <table className="table">
+        <Table striped bordered hover variant="dark">
           <thead className="thead-light">
             <tr>
               <th>User Name</th>
               <th>Email</th>
-              <th>Edit | Delete</th>
+              <th className="text-center">Edit | Delete</th>
             </tr>
           </thead>
           <tbody>{this.UsersList()}</tbody>
-        </table>
+        </Table>
       </div>
     );
   }

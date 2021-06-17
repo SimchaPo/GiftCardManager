@@ -32,6 +32,7 @@ export default function CreateNewUser() {
       <FormGroup>
         <Form.Label>User Type</Form.Label>
         <Form.Control
+          className="form-control-select"
           as={Select}
           name="userType"
           placeholder="User Type"

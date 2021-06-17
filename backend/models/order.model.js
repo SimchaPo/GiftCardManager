@@ -11,7 +11,7 @@ const orderSchema = new Schema(
           ref: "GiftCard",
           required: true,
         },
-        quantity: { type: String, required: true },
+        quantity: { type: Number, required: true },
       },
     ],
 
@@ -33,8 +33,6 @@ const orderSchema = new Schema(
 );
 orderSchema.pre("save", async function (next) {
   console.log("this", this);
-  //if (!this.password || !this.isModified("password")) return next;
-  //this.password = await bcrypt.hash(this.password, 10);
   next();
 });
 const Order = mongoose.model("Order", orderSchema);

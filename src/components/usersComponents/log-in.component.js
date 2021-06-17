@@ -8,19 +8,26 @@ function LogIn(props) {
   const auth = useAuth();
   const {
     register,
+    setError,
     formState: { errors, touchedFields },
     handleSubmit,
   } = useForm({
     mode: "all",
   });
-  //const { login } = useContext(UserContext);
+  const onSubmit = (data) => {
+    console.log(data);
 
+    auth.login(data).catch((err) => {
+      const formError = {
+        type: "server",
+        message: "Username or Password Incorrect",
+      };
+      setError("password", formError);
+      setError("email", formError);
+    });
+  };
   return (
-    <Form
-      onSubmit={handleSubmit((user) => {
-        auth.login(user);
-      })}
-    >
+    <Form onSubmit={handleSubmit(onSubmit)}>
       <Form.Group>
         <Form.Label>User Email</Form.Label>
         <Form.Control

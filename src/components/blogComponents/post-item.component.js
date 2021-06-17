@@ -6,11 +6,13 @@ import moment from "moment";
 import Paper from "@material-ui/core/Paper";
 import Divider from "@material-ui/core/Divider";
 import { Button } from "react-bootstrap";
+import { useAuth } from "../../authentication/use-auth";
 
 export default function Post(props) {
+  const { user } = useAuth();
+  console.log(props.info);
   const confirmDeletion = () => {
     const { _id } = props.info;
-
     Swal.fire({
       title: "Delete this one?",
       text: "This action can not be canceled!",
@@ -58,14 +60,12 @@ export default function Post(props) {
         <ul className="buttons">
           <li>
             <Link to={`/post/${_id}`} className="btn btn-primary">
-              {" "}
-              Show{" "}
+              Show
             </Link>
           </li>
           <li>
             <Link to={`/editpost/${_id}`} className="btn btn-warning">
-              {" "}
-              Edit{" "}
+              Edit
             </Link>
           </li>
           <li>

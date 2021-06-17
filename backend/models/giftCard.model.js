@@ -19,6 +19,11 @@ const giftCardSchema = new Schema(
       required: true,
       trim: true,
     },
+    price: {
+      type: Number,
+      required: true,
+      trim: true,
+    },
     expiry: {
       type: String,
       required: true,

@@ -27,6 +27,10 @@ import SinglePost from "./components/blogComponents/single-post.component";
 import EditPost from "./components/blogComponents/edit-post.component";
 import Loader from "react-loader-spinner";
 import useNetwork from "./hooks/useNetwork";
+import UsersOrders from "./components/ordersComponents/orders-list.component";
+import AllOrders from "./components/adminsComponents/all-orders-list.component";
+import OrderPage from "./components/ordersComponents/order.component";
+import ProjFooter from "./components/footer.component";
 
 function App() {
   const auth = useAuth();
@@ -48,22 +52,33 @@ function App() {
               You are in offline mode
             </div>
           )}
-          <div className="container">
-            <ProjNavbar />
-            <br />
+          <ProjNavbar />
+          <div className="content container">
             <Switch>
               <Route path="/" exact component={UsersList} />
               <Route path="/users" component={UsersList} />
-              <Route path="/createPost" exact component={CreatePost} />
+              <LoggedinRoute path="/createPost" exact component={CreatePost} />
               <Route path="/posts" exact component={PostsList} />
               <Route exact path="/post/:postId" component={SinglePost} />
-              <Route exact path="/editpost/:postId" component={EditPost} />
+              <LoggedinRoute
+                exact
+                path="/editpost/:postId"
+                component={EditPost}
+              />
               <NotLoggedinRoute path="/signIn" component={SignIn} />
               <NotLoggedinRoute path="/logIn" component={LogIn} />
               <LoggedinRoute path="/logout" component={Logout} />
               <LoggedinRoute path="/profile" component={Profile} />
               <LoggedinRoute path="/chat" component={ChatRoom} />
-              <Route exact path="/chatRoom/:roomId" component={ChatRoom} />
+              <LoggedinRoute path="/orders" component={UsersOrders} />
+              <AdminRoute path="/allorders" component={AllOrders} />
+              <Route exact path="/order/:orderId" component={OrderPage} />
+
+              <LoggedinRoute
+                exact
+                path="/chatRoom/:roomId"
+                component={ChatRoom}
+              />
               <AdminRoute path="/createGC" component={CreateGiftCard} />
               <Route path="/about" component={About} />
               <Route path="/stores" component={StoresList} />
@@ -77,6 +92,7 @@ function App() {
               <Route path="*" component={PageNotFound} />
             </Switch>
           </div>
+          <ProjFooter />
         </div>
       )}
     </Router>

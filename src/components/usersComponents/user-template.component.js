@@ -122,6 +122,8 @@ export default function UserTemplate(props) {
         <FormGroup className="col-md-4">
           <Form.Label>Country</Form.Label>
           <Form.Control
+            className="form-control-select"
+            style={{ padding: "0rem !important" }}
             as={Select}
             value={countries.filter((c) => c.label === watch("country"))}
             name="country"
@@ -152,6 +154,7 @@ export default function UserTemplate(props) {
         <FormGroup className="col-md-4">
           <Form.Label>City</Form.Label>
           <Form.Control
+            className="form-control-select"
             as={Select}
             value={cities.filter((c) => c.label === watch("city"))}
             name="city"

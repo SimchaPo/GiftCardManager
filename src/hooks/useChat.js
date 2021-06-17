@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useRef, useState } from "react";
 import socketIOClient from "socket.io-client";
 import { useAuth } from "../authentication/use-auth";
 import date from "date-and-time";
+import { showNotification } from "../swDev";
 
 const chatContext = createContext();
 
@@ -35,6 +36,7 @@ function useProvideChat() {
       };
       setMessages((messages) => [...messages, incomingMessage]);
       setCountNewMessages(countNewMessages + 1);
+      showNotification(message);
     });
 
     // Destroys the socket reference
@@ -52,7 +54,7 @@ function useProvideChat() {
       body: messageBody,
       senderId: socketRef.current.id,
       senderName: user.userName,
-      sendTime: date.format(now, "hh:mm"),
+      sendTime: date.format(now, "HH:mm"),
     });
   };
 

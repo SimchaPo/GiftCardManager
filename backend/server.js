@@ -22,6 +22,7 @@ app.use(
       secure: false,
       maxAge: 3600000,
     },
+    rolling: true,
   })
 );
 app.use(passport.initialize());

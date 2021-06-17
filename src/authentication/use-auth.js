@@ -17,7 +17,6 @@ function useProvideAuth() {
   const [loading, setLoading] = useState(true);
 
   const login = (userInfo) => {
-    setLoading(true);
     return axios
       .post("http://localhost:5000/users/login", qs.stringify(userInfo), {
         headers: {
@@ -33,8 +32,9 @@ function useProvideAuth() {
           return res.data.user;
         }
       })
-      .catch((err) => console.log("login error", err))
-      .finally(() => setLoading(false));
+      .catch((err) => {
+        throw err;
+      });
   };
   const update = (updatedUser) => {
     setLoading(true);

@@ -25,7 +25,7 @@ this.addEventListener("activate", (event) => {
   event.waitUntil(this.clients.claim());
 });
 this.addEventListener("fetch", (event) => {
-  console.log("fetch", event.request.url);
+  console.log("fetch2", event.request.method);
   event.respondWith(
     caches.match(event.request).then((resp) => {
       if (!navigator.onLine) {
@@ -35,7 +35,8 @@ this.addEventListener("fetch", (event) => {
       return fetch(event.request).then((response) => {
         console.log("on line", event.request.url);
         return caches.open("appV1").then((cache) => {
-          cache.put(event.request, response.clone());
+          if (event.request.method === "GET")
+            cache.put(event.request, response.clone());
           return response;
         });
       });

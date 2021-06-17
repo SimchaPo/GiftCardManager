@@ -12,6 +12,7 @@ import ForumTwoToneIcon from "@material-ui/icons/ForumTwoTone";
 import useChat from "../../hooks/useChat.js";
 import { useAuth } from "../../authentication/use-auth.js";
 import PostNav from "./post.navbar.js";
+import OrderNav from "./orders.navbar.js";
 
 function ProjNavbar() {
   const { user } = useAuth();
@@ -33,6 +34,7 @@ function ProjNavbar() {
             <StoreNav />
             <PostNav />
             <UsersNav />
+            <OrderNav />
           </Nav>
           <Nav className="ms-auto">
             {user && (

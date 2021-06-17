@@ -9,20 +9,16 @@ router.route("/").get((req, res) => {
 });
 
 router.route("/addgiftcard").post(async (req, res) => {
-  try {
-    console.log("add gift card:", req.body);
-    new GiftCard(req.body)
-      .save()
-      .then(() => res.json("gift card added!"))
-      .catch((err) => res.status(400).json("Error: " + err));
-  } catch {
-    (err) => res.status(400).json("Error: " + err);
-  }
+  console.log("add gift card:", req.body);
+  new GiftCard(req.body)
+    .save()
+    .then(() => res.json("gift card added!"))
+    .catch((err) => res.status(400).json("Error: " + err));
 });
 
 router.route("/getgiftcardbyid/:id").get((req, res) => {
   GiftCard.findById(req.params.id)
-    .then((store) => res.json(store))
+    .then((giftcard) => res.json(giftcard))
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
@@ -33,14 +29,15 @@ router.route("/delete/:id").delete((req, res) => {
 });
 
 router.route("/update/:id").post((req, res) => {
-  Store.findById(req.params.id)
+  GiftCard.findById(req.params.id)
     .then((giftcard) => {
       giftcard.storeName = req.body.storeName;
       giftcard.cardNumber = req.body.cardNumber;
       giftcard.amount = req.body.amount;
+      giftcard.price = req.body.price;
       giftcard.expiry = req.body.expiry;
 
-      store
+      giftcard
         .save()
         .then(() => res.json("gift card updated!"))
         .catch((err) => res.status(400).json("Error: " + err));

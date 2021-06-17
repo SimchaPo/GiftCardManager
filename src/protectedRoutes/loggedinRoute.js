@@ -7,10 +7,10 @@ export const LoggedinRoute = ({ component: Component, ...rest }) => {
   return (
     <Route
       {...rest}
-      render={() => {
-        console.log("loggedin route", auth);
+      render={(props) => {
+        console.log("rest", rest);
         if (auth.user) {
-          return <Component {...rest} />;
+          return <Component {...props} />;
         } else {
           return (
             <Redirect

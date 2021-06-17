@@ -14,8 +14,10 @@ export default function CreatePost(props) {
     handleSubmit,
   } = formHook;
   const onSubmit = (post) => {
-    post.postAuther = user._id;
+    post.postAutor = user;
     console.log("post", post);
+    console.log("post.postAutor", post.postAutor);
+    console.log("user", user);
 
     axios
       .post("http://localhost:5000/posts/addpost", qs.stringify(post), {

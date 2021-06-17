@@ -6,9 +6,9 @@ export const NotLoggedinRoute = ({ component: Component, ...rest }) => {
   return (
     <Route
       {...rest}
-      render={() => {
+      render={(props) => {
         if (!auth.user) {
-          return <Component {...rest} />;
+          return <Component {...props} />;
         } else {
           return (
             <Redirect
