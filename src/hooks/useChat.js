@@ -1,8 +1,8 @@
-import { createContext, useContext, useEffect, useRef, useState } from "react";
-import socketIOClient from "socket.io-client";
+import { createContext, useContext, useEffect, useState } from "react";
 import { useAuth } from "../authentication/use-auth";
 import date from "date-and-time";
 import { showNotification } from "../swDev";
+import useSocket from "./useSocket";
 
 const chatContext = createContext();
 
@@ -15,39 +15,28 @@ export const useChat = () => {
   return useContext(chatContext);
 };
 
-const NEW_CHAT_MESSAGE_EVENT = "newChatMessage"; // Name of the event
-const SOCKET_SERVER_URL = "http://localhost:5000";
+const NEW_CHAT_MESSAGE_EVENT = "newChatMessage";
 
 function useProvideChat() {
-  const [messages, setMessages] = useState([]); // Sent and received messages
-  const socketRef = useRef();
+  const [messages, setMessages] = useState([]);
   const { user } = useAuth();
   const [countNewMessages, setCountNewMessages] = useState(0);
+  const { socketRef } = useSocket();
   useEffect(() => {
-    // Creates a WebSocket connection
-    socketRef.current = socketIOClient(SOCKET_SERVER_URL);
+    console.log("socketRef", socketRef);
+    socketRef.current?.on(NEW_CHAT_MESSAGE_EVENT, (message) => {
+      console.log("countNewMessages", countNewMessages);
 
-    // Listens for incoming messages
-    socketRef.current.on(NEW_CHAT_MESSAGE_EVENT, (message) => {
-      console.log("socketRef.current", socketRef.current.sockets);
       const incomingMessage = {
         ...message,
         ownedByCurrentUser: message.senderId === socketRef.current.id,
       };
       setMessages((messages) => [...messages, incomingMessage]);
       setCountNewMessages(countNewMessages + 1);
-      showNotification(message);
+      !incomingMessage.ownedByCurrentUser && showNotification(message);
     });
+  }, [countNewMessages, socketRef.current]);
 
-    // Destroys the socket reference
-    // when the connection is closed
-    return () => {
-      socketRef.current.disconnect();
-    };
-  }, [countNewMessages]);
-
-  // Sends a message to the server that
-  // forwards it to all users in the same room
   const sendMessage = (messageBody) => {
     const now = new Date();
     socketRef.current.emit(NEW_CHAT_MESSAGE_EVENT, {

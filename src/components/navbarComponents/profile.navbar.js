@@ -2,11 +2,12 @@ import { IconButton } from "@material-ui/core";
 import { AccountCircle } from "@material-ui/icons";
 import { NavDropdown } from "react-bootstrap";
 import { PersonCircle } from "react-bootstrap-icons";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useAuth } from "../../authentication/use-auth";
 
 export default function ProfileNav() {
   const { user, logout } = useAuth();
+  const history = useHistory();
   return (
     (user && (
       <NavDropdown
@@ -27,7 +28,12 @@ export default function ProfileNav() {
         <NavDropdown.Item eventKey="10" as={Link} to="/profile">
           Profile
         </NavDropdown.Item>
-        <NavDropdown.Item eventKey="16" onClick={logout}>
+        <NavDropdown.Item
+          eventKey="16"
+          onClick={() => {
+            logout().then(history.push("/login"));
+          }}
+        >
           Log Out
         </NavDropdown.Item>
       </NavDropdown>

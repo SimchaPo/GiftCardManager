@@ -22,10 +22,11 @@ const ChatRoom = (props) => {
   }, [messages]);
   useEffect(() => {
     setCountNewMessages(0);
-  }, [countNewMessages]);
+  }, [countNewMessages, setCountNewMessages]);
   const handleChange = (event) => setNewMessage(event.target.value);
   return (
     <div className="chatWindow">
+      <h3>Chat</h3>
       <ul className="chat" id="chatList">
         {messages.map((message, i) => (
           <div key={i}>

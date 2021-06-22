@@ -233,8 +233,3 @@ input.chattextarea {
   background: #aaa;
   box-shadow: inset 0px 0px 3px #7f7f7f;
 }
-
-::-webkit-scrollbar-button {
-  display: block;
-  height: 26px;
-}

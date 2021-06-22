@@ -1,12 +1,16 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import "./Post.css";
 import moment from "moment";
-import Paper from "@material-ui/core/Paper";
-import Divider from "@material-ui/core/Divider";
 import { Button } from "react-bootstrap";
 import { useAuth } from "../../authentication/use-auth";
+import ROLE from "../../roles.enum";
+import { Card } from "react-bootstrap";
+import ThumbUpAltTwoToneIcon from "@material-ui/icons/ThumbUpAltTwoTone";
+import ThumbDownAltTwoToneIcon from "@material-ui/icons/ThumbDownAltTwoTone";
+import CommentTwoToneIcon from "@material-ui/icons/CommentTwoTone";
+import { Badge } from "@material-ui/core";
+import { Link } from "react-router-dom";
 
 export default function Post(props) {
   const { user } = useAuth();
@@ -30,51 +34,72 @@ export default function Post(props) {
     });
   };
 
-  const { _id, postTitle, postContent, createdAt } = props.info;
+  const { _id, postTitle, postContent, comments, likes, dislikes, createdAt } =
+    props.info;
   console.log(props.info);
 
   return (
-    <Paper className="post">
-      <p className="post_title" cols="10">
-        <b>
-          <span className="post-preview">
+    <div>
+      <Card
+        className="text-center m-2"
+        style={{ minWidth: "18rem", maxWidth: "18rem" }}
+      >
+        <Card.Header>
+          <div style={{ float: "left" }}>
             {postTitle.length > 25
               ? `${postTitle.substr(0, 25)}...`
               : postTitle}
-          </span>
-        </b>
-      </p>
-      <Divider light />
-      <p className="post_body">
-        <span className="post-preview">
-          {postContent.length > 300
-            ? `${postContent.substr(0, 300)}...`
-            : postContent}
-        </span>
-      </p>
-      <Divider light />
-      <p className="post_datestamp">
-        <b>{moment(createdAt).fromNow()}</b>
-      </p>
-      <div className="post_button">
-        <ul className="buttons">
-          <li>
-            <Link to={`/post/${_id}`} className="btn btn-primary">
-              Show
-            </Link>
-          </li>
-          <li>
-            <Link to={`/editpost/${_id}`} className="btn btn-warning">
-              Edit
-            </Link>
-          </li>
-          <li>
-            <Button onClick={confirmDeletion} className="btn btn-danger">
-              Delete
-            </Button>
-          </li>
-        </ul>
-      </div>
-    </Paper>
+          </div>
+          <div style={{ float: "right" }}>
+            <Badge color="primary" badgeContent={comments.length}>
+              <CommentTwoToneIcon />
+            </Badge>
+            {" | "}
+            <Badge color="error" badgeContent={likes.length}>
+              <ThumbUpAltTwoToneIcon />
+            </Badge>
+            {" | "}
+            <Badge color="secondary" badgeContent={dislikes.length}>
+              <ThumbDownAltTwoToneIcon />
+            </Badge>
+          </div>
+        </Card.Header>
+        <Card.Body style={{ height: "334px" }}>
+          <Card.Title>{props.info.postAuthor.userName}</Card.Title>
+          <Card.Text style={{ height: "216px" }}>
+            {postContent.length > 300
+              ? `${postContent.substr(0, 300)}...`
+              : postContent}
+          </Card.Text>
+          <Card.Link as={Link} to={`/post/${_id}`} className="btn btn-primary">
+            Show
+          </Card.Link>
+          {(user?.userType === ROLE[0] ||
+            user?._id === props.info.postAuthor._id) && (
+            <>
+              <Card.Link
+                as={Link}
+                to={`/editpost/${_id}`}
+                className="btn btn-warning"
+              >
+                Edit
+              </Card.Link>
+
+              <Card.Link
+                as={Button}
+                onClick={confirmDeletion}
+                className="btn btn-danger"
+              >
+                Delete
+              </Card.Link>
+            </>
+          )}
+        </Card.Body>
+
+        <Card.Footer className="text-muted">
+          {moment(createdAt).fromNow()}
+        </Card.Footer>
+      </Card>
+    </div>
   );
 }

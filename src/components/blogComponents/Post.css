@@ -1,12 +1,9 @@
 .post {
   display: grid;
   grid-template-columns: repeat(1, 1fr);
-
   float: left;
-  margin-right: 10px;
+  margin: 10px;
   width: 250px;
-  height: 450px;
-  margin-top: 50px;
 }
 ul li {
   list-style-type: none;
@@ -15,7 +12,7 @@ ul li {
 
 .post_title {
   font-size: 1em;
-  margin-top: 10px;
+  margin: 10px;
   text-align: center;
 }
 .post_button {
@@ -23,13 +20,18 @@ ul li {
   display: inline-block;
 }
 .buttons {
-  position: absolute;
+  padding: 0px !important;
+
+  margin: 10px;
+  position: inherit;
   bottom: 0;
+  text-align: center;
 }
 .post_body {
   margin: 10px;
   white-space: pre-wrap;
   text-align: left;
+  height: 264px;
 }
 .post_list {
   display: grid;
@@ -39,5 +41,6 @@ ul li {
   text-align: center;
 }
 .post_datestamp {
+  margin: 10px;
   text-align: center;
 }

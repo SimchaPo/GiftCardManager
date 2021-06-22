@@ -13,12 +13,15 @@ const postSchema = new Schema(
       type: String,
       required: "Content is required",
     },
-    postAutor: {
+    postAuthor: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
       trim: true,
     },
+    comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
+    likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    dislikes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   },
   {
     timestamps: true,

@@ -28,36 +28,41 @@ export default function CreateNewUser() {
   };
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
-      <FormGroup>
-        <Form.Label>User Type</Form.Label>
-        <Form.Control
-          className="form-control-select"
-          as={Select}
-          name="userType"
-          placeholder="User Type"
-          onChange={(selectedType) => {
-            setValue("userType", selectedType.value);
-          }}
-          options={ROLE.map((r) => ({ value: r, label: r }))}
-          ref={() => ({
-            ...register("userType", {
-              required: "userType is required",
-            }),
-          })}
-          isValid={touchedFields.userType && !errors.userType}
-          isInvalid={!!errors.userType}
-        />
-        <Form.Control.Feedback type="valid">Looks good!</Form.Control.Feedback>
-        <Form.Control.Feedback type="invalid">
-          {errors.userType?.message}
-        </Form.Control.Feedback>
-      </FormGroup>
-      <UserTemplate {...formHook} />
+    <div>
+      <h3>Create New User</h3>
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <FormGroup>
+          <Form.Label>User Type</Form.Label>
+          <Form.Control
+            className="form-control-select"
+            as={Select}
+            name="userType"
+            placeholder="User Type"
+            onChange={(selectedType) => {
+              setValue("userType", selectedType.value);
+            }}
+            options={ROLE.map((r) => ({ value: r, label: r }))}
+            ref={() => ({
+              ...register("userType", {
+                required: "userType is required",
+              }),
+            })}
+            isValid={touchedFields.userType && !errors.userType}
+            isInvalid={!!errors.userType}
+          />
+          <Form.Control.Feedback type="valid">
+            Looks good!
+          </Form.Control.Feedback>
+          <Form.Control.Feedback type="invalid">
+            {errors.userType?.message}
+          </Form.Control.Feedback>
+        </FormGroup>
+        <UserTemplate {...formHook} />
 
-      <Button type="submit" onClick={() => console.log(errors)}>
-        Create
-      </Button>
-    </Form>
+        <Button type="submit" onClick={() => console.log(errors)}>
+          Create
+        </Button>
+      </Form>
+    </div>
   );
 }

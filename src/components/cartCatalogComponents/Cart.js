@@ -30,13 +30,11 @@ export default function CartPage(props) {
     useCart();
   const { user } = useAuth();
 
-  if (isEmpty) return <p>Your cart is empty</p>;
-
   return (
     <div>
+      <h3>Cart</h3>
       {(isEmpty && <p>Your cart is empty</p>) || (
         <div>
-          <h3>Cart</h3>
           <Table striped bordered hover variant="dark" responsive="sm">
             <thead>
               <tr>

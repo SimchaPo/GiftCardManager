@@ -3,6 +3,7 @@ import qs from "qs";
 import React, { useEffect, useState } from "react";
 import { Button, Form, FormGroup } from "react-bootstrap";
 import { useForm } from "react-hook-form";
+import useBlog from "../../hooks/useBlog";
 
 export default function EditPost(props) {
   const formHook = useForm({ mode: "all" });
@@ -13,6 +14,7 @@ export default function EditPost(props) {
     handleSubmit,
   } = formHook;
   const [postToUpdate, setPostToUpdate] = useState({});
+  const { updatePosts } = useBlog();
   console.log(props);
   const postId = props.match.params.postId;
 
@@ -26,7 +28,7 @@ export default function EditPost(props) {
     console.log(postToUpdate);
     setValue("postTitle", postToUpdate.postTitle);
     setValue("postContent", postToUpdate.postContent);
-    setValue("postAutor", postToUpdate.postAutor);
+    setValue("postAuthor", postToUpdate.postAuthor);
 
     setValue("createdAt", postToUpdate.createdAt);
   }, [postToUpdate, setValue]);
@@ -43,61 +45,67 @@ export default function EditPost(props) {
           },
         }
       )
-      .then((res) => console.log(res.data))
+      .then((res) => {
+        console.log(res.data);
+        updatePosts();
+      })
       .catch((err) => console.log(err));
   };
   const loadForm = () => {
     if (!postToUpdate) return null;
 
     return (
-      <Form onSubmit={handleSubmit(onSubmit)} className="col-md-10">
-        <legend className="text-center">Edit Post</legend>
+      <div>
+        <h3>Edit Post</h3>
+        <Form onSubmit={handleSubmit(onSubmit)} className="col-md-10">
+          <legend className="text-center">Edit Post</legend>
 
-        <FormGroup>
-          <Form.Label>Title for the Post:</Form.Label>
-          <Form.Control
-            type="text"
-            name="postTitle"
-            placeholder="Title.."
-            {...register("postTitle", {
-              required: "postTitle is required",
-            })}
-            isValid={touchedFields.postTitle && !errors.postTitle}
-            isInvalid={!!errors.postTitle}
-          />
-          <Form.Control.Feedback type="valid">
-            Looks good!
-          </Form.Control.Feedback>
-          <Form.Control.Feedback type="invalid">
-            {errors.postTitle?.message}
-          </Form.Control.Feedback>
-        </FormGroup>
-        <FormGroup>
-          <Form.Label>Content:</Form.Label>
-          <Form.Control
-            as="textarea"
-            type="text"
-            rows={7}
-            cols={25}
-            name="postContent"
-            placeholder="Here write your content.."
-            {...register("postContent", {
-              required: "postContent is required",
-            })}
-            isValid={touchedFields.postContent && !errors.postContent}
-            isInvalid={!!errors.postContent}
-          />
-          <Form.Control.Feedback type="valid">
-            Looks good!
-          </Form.Control.Feedback>
-          <Form.Control.Feedback type="invalid">
-            {errors.postContent?.message}
-          </Form.Control.Feedback>
-        </FormGroup>
-        <Button type="submit" onClick={() => console.log(errors)}>
-          Save changes
-        </Button>
-      </Form>
+          <FormGroup>
+            <Form.Label>Title for the Post:</Form.Label>
+            <Form.Control
+              type="text"
+              name="postTitle"
+              placeholder="Title.."
+              {...register("postTitle", {
+                required: "postTitle is required",
+              })}
+              isValid={touchedFields.postTitle && !errors.postTitle}
+              isInvalid={!!errors.postTitle}
+            />
+            <Form.Control.Feedback type="valid">
+              Looks good!
+            </Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">
+              {errors.postTitle?.message}
+            </Form.Control.Feedback>
+          </FormGroup>
+          <FormGroup>
+            <Form.Label>Content:</Form.Label>
+            <Form.Control
+              as="textarea"
+              type="text"
+              rows={7}
+              cols={25}
+              name="postContent"
+              placeholder="Here write your content.."
+              {...register("postContent", {
+                required: "postContent is required",
+              })}
+              isValid={touchedFields.postContent && !errors.postContent}
+              isInvalid={!!errors.postContent}
+            />
+            <Form.Control.Feedback type="valid">
+              Looks good!
+            </Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">
+              {errors.postContent?.message}
+            </Form.Control.Feedback>
+          </FormGroup>
+          <Button type="submit" onClick={() => console.log(errors)}>
+            Save changes
+          </Button>
+        </Form>
+      </div>
     );
   };
 

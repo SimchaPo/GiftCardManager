@@ -1,86 +1,94 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { Table } from "react-bootstrap";
+import { useAuth } from "../../authentication/use-auth";
+import ROLE from "../../roles.enum";
 
 const User = (props) => (
   <tr>
     <td>{props.user.userName}</td>
-    <td>{props.user.email}</td>
-    <td className="text-center">
-      <Link className="btn btn-link" to={"/edit/" + props.user._id}>
-        edit
-      </Link>
-      |
-      <button
-        className="btn btn-link"
-        onClick={() => {
-          props.deleteUser(props.user._id);
-        }}
-      >
-        delete
-      </button>
-    </td>
+    {props.userType === ROLE[0] && (
+      <>
+        <td>{props.user.email}</td>
+        <td className="text-center">
+          <Link className="btn btn-link" to={"/edit/" + props.user._id}>
+            edit
+          </Link>
+          |
+          <button
+            className="btn btn-link"
+            onClick={() => {
+              props.deleteUser(props.user._id);
+            }}
+          >
+            delete
+          </button>
+        </td>
+      </>
+    )}
   </tr>
 );
-class UsersList extends Component {
-  constructor(props) {
-    super(props);
-    this.deleteUser = this.deleteUser.bind(this);
-    this.state = { users: [], error: null };
-  }
-  componentDidMount() {
+export default function UsersList(props) {
+  const [users, setUsers] = useState([]);
+  const [error, setError] = useState(null);
+  const { user } = useAuth();
+  useEffect(() => {
     axios
       .get("http://localhost:5000/users", {
         withCredentials: true,
-        timeout: 5000,
       })
       .then((res) => {
         console.log("res", res);
         if (res.data.length > 0) {
-          this.setState({
-            users: res.data,
-          });
+          setUsers(res.data);
+          setError(null);
         }
       })
       .catch((error) => {
-        this.setState({
-          error: error.response?.data.errorMessage,
-        });
+        setError(error.response?.data.errorMessage);
       });
-  }
-  deleteUser(id) {
+  }, [user]);
+  const deleteUser = (id) => {
     console.log(id);
     axios
       .delete("http://localhost:5000/users/delete/" + id)
       .then((res) => console.log(res.data))
       .catch((err) => console.log(err));
-    this.setState({ users: this.state.users.filter((el) => el._id !== id) });
-  }
-  UsersList() {
-    return this.state.users.map((user) => {
-      return <User user={user} deleteUser={this.deleteUser} key={user._id} />;
+    setUsers(users.filter((el) => el._id !== id));
+  };
+  const UsersList = () => {
+    return users.map((userItem) => {
+      return (
+        <User
+          userType={user.userType}
+          user={userItem}
+          deleteUser={deleteUser}
+          key={userItem._id}
+        />
+      );
     });
-  }
-  render() {
-    return this.state.error ? (
-      <h3 className="text-center">{this.state.error}</h3>
-    ) : (
-      <div>
-        <h3>Users</h3>
-        <Table striped bordered hover variant="dark">
-          <thead className="thead-light">
-            <tr>
-              <th>User Name</th>
-              <th>Email</th>
-              <th className="text-center">Edit | Delete</th>
-            </tr>
-          </thead>
-          <tbody>{this.UsersList()}</tbody>
-        </Table>
-      </div>
-    );
-  }
+  };
+  return (
+    <div>
+      <h3>Users</h3>
+      {(error && <h4 className="text-center">{error}</h4>) ||
+        (user && (
+          <Table striped bordered hover variant="dark">
+            <thead className="thead-light">
+              <tr>
+                <th>User Name</th>
+                {user.userType === ROLE[0] && (
+                  <>
+                    <th>Email</th>
+                    <th className="text-center">Edit | Delete</th>
+                  </>
+                )}
+              </tr>
+            </thead>
+            <tbody>{UsersList()}</tbody>
+          </Table>
+        ))}
+    </div>
+  );
 }
-
-export default UsersList;

@@ -25,7 +25,7 @@ export default function CatalogPage(props) {
 
   return (
     <div>
-      <h1>Catalog</h1>
+      <h3>Catalog</h3>
       <CardGroup
         style={{
           justifyContent: "center",

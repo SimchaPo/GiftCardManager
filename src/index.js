@@ -10,15 +10,21 @@ import { ProvideAuth } from "./authentication/use-auth";
 import { CartProvider } from "react-use-cart";
 import { ProvideChat } from "./hooks/useChat";
 import { swDev } from "./swDev";
+import { ProvideSocket } from "./hooks/useSocket";
+import { ProvideBlog } from "./hooks/useBlog";
 
 ReactDOM.render(
   <React.StrictMode>
     <ProvideAuth>
-      <ProvideChat>
-        <CartProvider>
-          <App />
-        </CartProvider>
-      </ProvideChat>
+      <ProvideSocket>
+        <ProvideBlog>
+          <ProvideChat>
+            <CartProvider>
+              <App />
+            </CartProvider>
+          </ProvideChat>
+        </ProvideBlog>
+      </ProvideSocket>
     </ProvideAuth>
   </React.StrictMode>,
   document.getElementById("root")

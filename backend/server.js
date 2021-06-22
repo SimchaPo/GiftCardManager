@@ -61,6 +61,7 @@ const io = require("socket.io")(server, {
 });
 
 const NEW_CHAT_MESSAGE_EVENT = "newChatMessage";
+const CHANGE_POST_EVENT = "changePost";
 
 io.on("connection", (socket) => {
   console.log(`Client ${socket.id} connected`);
@@ -72,6 +73,10 @@ io.on("connection", (socket) => {
   // Listen for new messages
   socket.on(NEW_CHAT_MESSAGE_EVENT, (data) => {
     io.in(roomId).emit(NEW_CHAT_MESSAGE_EVENT, data);
+  });
+
+  socket.on(CHANGE_POST_EVENT, () => {
+    io.in(roomId).emit(CHANGE_POST_EVENT);
   });
 
   // Leave the room if the user closes the socket
