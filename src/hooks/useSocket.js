@@ -1,6 +1,5 @@
 import { createContext, useContext, useEffect, useRef } from "react";
 import socketIOClient from "socket.io-client";
-import { useAuth } from "../authentication/use-auth";
 
 const socketContext = createContext();
 
@@ -19,7 +18,6 @@ const SOCKET_SERVER_URL = "http://localhost:5000";
 
 function useProvideSocket() {
   const socketRef = useRef();
-  const { user } = useAuth();
   useEffect(() => {
     // Creates a WebSocket connection
     socketRef.current = socketIOClient(SOCKET_SERVER_URL);

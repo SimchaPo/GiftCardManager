@@ -1,7 +1,4 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { useAuth } from "../authentication/use-auth";
-import date from "date-and-time";
-import { showNotification } from "../swDev";
 import useSocket from "./useSocket";
 import axios from "axios";
 
@@ -20,7 +17,6 @@ const CHANGE_POST_EVENT = "changePost";
 
 function useProvideBlog() {
   const [posts, setPosts] = useState([]);
-  const { user } = useAuth();
   const { socketRef } = useSocket();
   const getPosts = () => {
     console.log("getPosts");

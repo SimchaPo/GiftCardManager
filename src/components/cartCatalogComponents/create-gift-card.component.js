@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import DatePicker from "react-datepicker";
 import Cards from "react-credit-cards";
-import GiftCardTemplate from "./card-template.component.js";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 import qs from "qs";
@@ -171,5 +170,3 @@ export default class CreateGiftCard extends Component {
     );
   }
 }
-
-//export default CreateGiftCard;

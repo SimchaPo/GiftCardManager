@@ -2,7 +2,7 @@ import axios from "axios";
 import qs from "qs";
 import { Button, Form, FormGroup } from "react-bootstrap";
 import { useForm } from "react-hook-form";
-import { useAuth } from "../../authentication/use-auth";
+import { useAuth } from "../../hooks/use-auth";
 import useBlog from "../../hooks/useBlog";
 
 export default function AddComment(props) {

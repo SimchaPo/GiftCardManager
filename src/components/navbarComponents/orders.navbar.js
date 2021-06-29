@@ -1,6 +1,6 @@
 import { Nav, NavDropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { useAuth } from "../../authentication/use-auth";
+import { useAuth } from "../../hooks/use-auth";
 import ROLE from "../../roles.enum";
 
 export default function OrderNav() {

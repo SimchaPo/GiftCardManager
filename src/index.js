@@ -6,17 +6,18 @@ import reportWebVitals from "./reportWebVitals";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 
 import "bootstrap/dist/js/bootstrap.bundle.min";
-import { ProvideAuth } from "./authentication/use-auth";
+import { ProvideAuth } from "./hooks/use-auth";
 import { CartProvider } from "react-use-cart";
 import { ProvideChat } from "./hooks/useChat";
 import { swDev } from "./swDev";
 import { ProvideSocket } from "./hooks/useSocket";
 import { ProvideBlog } from "./hooks/useBlog";
+import "react-credit-cards/es/styles-compiled.css";
 
 ReactDOM.render(
   <React.StrictMode>
-    <ProvideAuth>
-      <ProvideSocket>
+    <ProvideSocket>
+      <ProvideAuth>
         <ProvideBlog>
           <ProvideChat>
             <CartProvider>
@@ -24,8 +25,8 @@ ReactDOM.render(
             </CartProvider>
           </ProvideChat>
         </ProvideBlog>
-      </ProvideSocket>
-    </ProvideAuth>
+      </ProvideAuth>
+    </ProvideSocket>
   </React.StrictMode>,
   document.getElementById("root")
 );

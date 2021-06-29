@@ -3,7 +3,7 @@ import { AccountCircle } from "@material-ui/icons";
 import { NavDropdown } from "react-bootstrap";
 import { PersonCircle } from "react-bootstrap-icons";
 import { Link, useHistory } from "react-router-dom";
-import { useAuth } from "../../authentication/use-auth";
+import { useAuth } from "../../hooks/use-auth";
 
 export default function ProfileNav() {
   const { user, logout } = useAuth();

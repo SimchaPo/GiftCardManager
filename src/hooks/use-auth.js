@@ -88,6 +88,7 @@ function useProvideAuth() {
       })
       .finally(() => setLoading(false));
   }, []);
+
   return {
     user,
     loading,

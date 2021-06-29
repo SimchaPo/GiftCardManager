@@ -1,4 +1,3 @@
-import React from "react";
 import { Container, Nav, Navbar } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
@@ -10,7 +9,7 @@ import CatalogNav from "./catalog.navbar.js";
 import UsersNav from "./users.navbar.js";
 import ForumTwoToneIcon from "@material-ui/icons/ForumTwoTone";
 import useChat from "../../hooks/useChat.js";
-import { useAuth } from "../../authentication/use-auth.js";
+import { useAuth } from "../../hooks/use-auth.js";
 import PostNav from "./post.navbar.js";
 import OrderNav from "./orders.navbar.js";
 
@@ -18,6 +17,7 @@ function ProjNavbar() {
   const { user } = useAuth();
   const { totalItems } = useCart();
   const { countNewMessages } = useChat();
+
   return (
     <Navbar collapseOnSelect expand="sm" bg="dark" variant="dark" sticky="top">
       <Container>

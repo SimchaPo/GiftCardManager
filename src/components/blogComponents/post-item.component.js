@@ -1,9 +1,8 @@
 import React from "react";
 import Swal from "sweetalert2";
-import "./Post.css";
 import moment from "moment";
 import { Button } from "react-bootstrap";
-import { useAuth } from "../../authentication/use-auth";
+import { useAuth } from "../../hooks/use-auth";
 import ROLE from "../../roles.enum";
 import { Card } from "react-bootstrap";
 import ThumbUpAltTwoToneIcon from "@material-ui/icons/ThumbUpAltTwoTone";
@@ -45,11 +44,7 @@ export default function Post(props) {
         style={{ minWidth: "18rem", maxWidth: "18rem" }}
       >
         <Card.Header>
-          <div style={{ float: "left" }}>
-            {postTitle.length > 25
-              ? `${postTitle.substr(0, 25)}...`
-              : postTitle}
-          </div>
+          <div style={{ float: "left" }}>{props.info.postAuthor.userName}</div>
           <div style={{ float: "right" }}>
             <Badge color="primary" badgeContent={comments.length}>
               <CommentTwoToneIcon />
@@ -65,7 +60,12 @@ export default function Post(props) {
           </div>
         </Card.Header>
         <Card.Body style={{ height: "334px" }}>
-          <Card.Title>{props.info.postAuthor.userName}</Card.Title>
+          <Card.Title>
+            {" "}
+            {postTitle.length > 25
+              ? `${postTitle.substr(0, 25)}...`
+              : postTitle}
+          </Card.Title>
           <Card.Text style={{ height: "216px" }}>
             {postContent.length > 300
               ? `${postContent.substr(0, 300)}...`

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Table } from "react-bootstrap";
-import { useAuth } from "../../authentication/use-auth";
+import { useAuth } from "../../hooks/use-auth";
 import date from "date-and-time";
 import VisibilityTwoToneIcon from "@material-ui/icons/VisibilityTwoTone";
 import { Link } from "react-router-dom";

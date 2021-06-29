@@ -8,7 +8,7 @@ import { Badge } from "@material-ui/core";
 import axios from "axios";
 import AddComment from "./add-comment.component";
 import CommentsList from "./comments-list.component";
-import { useAuth } from "../../authentication/use-auth";
+import { useAuth } from "../../hooks/use-auth";
 import qs from "qs";
 import useBlog from "../../hooks/useBlog";
 import { Card } from "react-bootstrap";

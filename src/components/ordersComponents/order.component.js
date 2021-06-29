@@ -1,10 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Badge, Button, Table } from "react-bootstrap";
-import { useAuth } from "../../authentication/use-auth";
-import date from "date-and-time";
-import { ItemCart } from "../cartCatalogComponents/ItemCart";
-
 import Cards from "react-credit-cards";
 import CachedIcon from "@material-ui/icons/Cached";
 
@@ -83,7 +79,6 @@ function OrderItem(props) {
   );
 }
 export default function OrderPage(props) {
-  const { user } = useAuth();
   const [orderToUpdate, setOrderToUpdate] = useState();
   const [loading, setLoading] = useState(false);
   const orderId = props.match.params.orderId;

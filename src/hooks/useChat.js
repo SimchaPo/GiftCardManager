@@ -1,8 +1,8 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { useAuth } from "../authentication/use-auth";
 import date from "date-and-time";
 import { showNotification } from "../swDev";
 import useSocket from "./useSocket";
+import { useAuth } from "./use-auth";
 
 const chatContext = createContext();
 
@@ -32,10 +32,12 @@ function useProvideChat() {
         ownedByCurrentUser: message.senderId === socketRef.current.id,
       };
       setMessages((messages) => [...messages, incomingMessage]);
-      setCountNewMessages(countNewMessages + 1);
       !incomingMessage.ownedByCurrentUser && showNotification(message);
     });
-  }, [countNewMessages, socketRef.current]);
+  }, [socketRef.current]);
+  useEffect(() => {
+    messages.length > 0 && setCountNewMessages(countNewMessages + 1);
+  }, [messages]);
 
   const sendMessage = (messageBody) => {
     const now = new Date();

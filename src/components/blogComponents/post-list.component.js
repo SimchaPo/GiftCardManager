@@ -3,7 +3,6 @@ import React from "react";
 import { CardGroup } from "react-bootstrap";
 import useBlog from "../../hooks/useBlog";
 import Post from "./post-item.component";
-import "./Post.css";
 
 export default function Listing(props) {
   const { posts, updatePosts } = useBlog();

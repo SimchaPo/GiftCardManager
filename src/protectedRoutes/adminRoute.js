@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
-import { useAuth } from "../authentication/use-auth";
+import { useAuth } from "../hooks/use-auth";
 export const AdminRoute = ({ component: Component, ...rest }) => {
   const auth = useAuth();
   return (

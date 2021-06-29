@@ -1,6 +1,6 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import { useAuth } from "../../authentication/use-auth.js";
+import { useAuth } from "../../hooks/use-auth.js";
 function Logout(props) {
   const auth = useAuth();
   return (

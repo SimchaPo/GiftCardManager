@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
+import useChat from "../../hooks/useChat";
 import "./chatcss.css";
-import useChat from "../hooks/useChat";
 
 const ChatRoom = (props) => {
   const [newMessage, setNewMessage] = useState();

@@ -4,7 +4,7 @@ import qs from "qs";
 import { useCart } from "react-use-cart";
 import { ItemCart } from "./ItemCart";
 import { Table } from "react-bootstrap";
-import { useAuth } from "../../authentication/use-auth";
+import { useAuth } from "../../hooks/use-auth";
 function checkOut(items, cartTotal, emptyCart) {
   const order = {
     giftCards: items,

@@ -2,12 +2,15 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { Table } from "react-bootstrap";
-import { useAuth } from "../../authentication/use-auth";
 import ROLE from "../../roles.enum";
+import useBlog from "../../hooks/useBlog";
+import { useAuth } from "../../hooks/use-auth";
 
 const User = (props) => (
   <tr>
     <td>{props.user.userName}</td>
+    <td>{props.user.likes}</td>
+    <td>{props.user.dislikes}</td>
     {props.userType === ROLE[0] && (
       <>
         <td>{props.user.email}</td>
@@ -33,6 +36,9 @@ export default function UsersList(props) {
   const [users, setUsers] = useState([]);
   const [error, setError] = useState(null);
   const { user } = useAuth();
+  const { posts } = useBlog();
+  const reducer = (a, b) => a + b;
+
   useEffect(() => {
     axios
       .get("http://localhost:5000/users", {
@@ -41,7 +47,20 @@ export default function UsersList(props) {
       .then((res) => {
         console.log("res", res);
         if (res.data.length > 0) {
-          setUsers(res.data);
+          let usersList = res.data;
+          usersList.map((user) => {
+            user.likes = posts
+              .filter((post) => post.postAuthor._id === user._id)
+              .map((post) => post.likes.length)
+              .reduce(reducer, 0);
+            user.dislikes = posts
+              .filter((post) => post.postAuthor._id === user._id)
+              .map((post) => post.dislikes.length)
+              .reduce(reducer, 0);
+            console.log("likes,dislikes", user.likes, user.dislikes);
+            return user;
+          });
+          setUsers(usersList);
           setError(null);
         }
       })
@@ -49,6 +68,22 @@ export default function UsersList(props) {
         setError(error.response?.data.errorMessage);
       });
   }, [user]);
+  useEffect(() => {
+    let usersList = users;
+    usersList.map((user) => {
+      user.likes = posts
+        .filter((post) => post.postAuthor._id === user._id)
+        .map((post) => post.likes.length)
+        .reduce(reducer, 0);
+      user.dislikes = posts
+        .filter((post) => post.postAuthor._id === user._id)
+        .map((post) => post.dislikes.length)
+        .reduce(reducer, 0);
+      console.log("likes,dislikes", user.likes, user.dislikes);
+      return user;
+    });
+    setUsers(usersList);
+  }, [posts, users]);
   const deleteUser = (id) => {
     console.log(id);
     axios
@@ -78,6 +113,8 @@ export default function UsersList(props) {
             <thead className="thead-light">
               <tr>
                 <th>User Name</th>
+                <th>Likes</th>
+                <th>Dislikes</th>
                 {user.userType === ROLE[0] && (
                   <>
                     <th>Email</th>
